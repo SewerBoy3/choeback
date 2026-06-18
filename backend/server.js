@@ -10,8 +10,10 @@ import adminSongsRouter from './routes/adminSongs.js';
 import authRouter from './routes/auth.js';
 import gamesRouter from './routes/games.js';
 import songsRouter from './routes/songs.js';
+import notifyRouter from './routes/notify.js';
 import db from './database.js';
 import prisma from './prisma.js';
+import { startDiscordBot } from './services/discordBot.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -65,6 +67,9 @@ app.use('/api/admin', adminRouter);
 app.use('/api/admin', adminSongsRouter);
 app.use('/api/games', gamesRouter);
 app.use('/api/songs', songsRouter);
+app.use('/notify', notifyRouter);
+// Mount on root so /test-webhooks matches the router's /test-webhooks and /fer matches /notify/fer if we change notify.js
+app.use('/', notifyRouter);
 
 // Ruta pública para consultar la fecha de aniversario actual de manera dinámica
 app.get('/api/anniversary', async (req, res) => {
@@ -121,8 +126,9 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Iniciar el servidor Express
-if (process.env.NODE_ENV !== 'production' && process.env.VERCEL !== '1') {
+// Iniciar el servidor Express y el bot de Discord
+// En Render, NODE_ENV puede ser 'production', así que solo evitamos el listen si estamos en Vercel
+if (process.env.VERCEL !== '1') {
   app.listen(PORT, () => {
     console.log(`=======================================================`);
     console.log(`🚀 Servidor Express ejecutándose en el puerto: ${PORT}`);
@@ -131,7 +137,11 @@ if (process.env.NODE_ENV !== 'production' && process.env.VERCEL !== '1') {
     console.log(`🔗 API de Admin:    http://localhost:${PORT}/api/admin`);
     console.log(`🔗 API Aniversario: http://localhost:${PORT}/api/anniversary`);
     console.log(`=======================================================`);
+    startDiscordBot();
   });
+} else {
+  // Entorno Serverless (Vercel) donde el servidor no queda escuchando pero necesitamos iniciar el bot
+  startDiscordBot();
 }
 
 // Exportar la app para Vercel (Serverless Functions)
