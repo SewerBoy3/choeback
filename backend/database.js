@@ -164,11 +164,13 @@ async function seedData() {
   }
 }
 
-// Ejecutar la siembra
-if (process.env.VERCEL !== '1') {
+// Ejecutar la siembra SOLO si se pide explícitamente con FORCE_SEED=1
+// Esto evita que cada deploy/restart en Render reinserte datos por defecto
+if (process.env.FORCE_SEED === '1') {
+  console.log('🌱 FORCE_SEED=1 detectado: ejecutando siembra...');
   seedData();
 } else {
-  console.log('⚡ Vercel detectado: Saltando siembra automática en cold start.');
+  console.log('ℹ️  Siembra automática desactivada. Usar FORCE_SEED=1 para sembrar.');
 }
 
 export default db;

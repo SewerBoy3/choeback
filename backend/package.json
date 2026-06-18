@@ -7,7 +7,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "build": "prisma generate && prisma db push"
+    "build": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "FORCE_SEED=1 node seed.js"
   },
   "keywords": [],
   "author": "",
