@@ -78,3 +78,14 @@ model Cancion {
 
   @@map("canciones")
 }
+
+model Foto {
+  id           Int      @id @default(autoincrement())
+  image_url    String                        // URL de la imagen (Drive, Imgur, etc.)
+  caption      String   @default("")         // Frase que acompaña la foto
+  sort_order   Int      @default(0)
+  is_published Boolean  @default(true)
+  created_at   DateTime @default(now())
+
+  @@map("fotos")
+}

@@ -11,6 +11,7 @@ import authRouter from './routes/auth.js';
 import gamesRouter from './routes/games.js';
 import songsRouter from './routes/songs.js';
 import notifyRouter from './routes/notify.js';
+import galleryRouter from './routes/gallery.js';
 import db from './database.js';
 import prisma from './prisma.js';
 import { startDiscordBot } from './services/discordBot.js';
@@ -68,6 +69,7 @@ app.use('/api/admin', adminSongsRouter);
 app.use('/api/games', gamesRouter);
 app.use('/api/songs', songsRouter);
 app.use('/notify', notifyRouter);
+app.use('/api/gallery', galleryRouter);
 // Mount on root so /test-webhooks matches the router's /test-webhooks and /fer matches /notify/fer if we change notify.js
 app.use('/', notifyRouter);
 
