@@ -5,3 +5,4 @@ database.sqlite
 prisma/database.sqlite
 uploads/
 credentials.json
+credentials.json.local
