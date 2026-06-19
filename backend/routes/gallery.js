@@ -91,6 +91,9 @@ router.get("/all", verificarAdmin, async (req, res) => {
  * POST /api/gallery  (admin — crear foto)
  */
 router.post("/", verificarAdmin, upload.single("image"), async (req, res) => {
+  console.log("POST /api/gallery - Body:", req.body);
+  console.log("POST /api/gallery - File:", req.file ? "Present" : "None");
+
   const { image_url, caption, sort_order, is_published } = req.body;
 
   let finalImageUrl = image_url?.trim() || "";
@@ -98,6 +101,7 @@ router.post("/", verificarAdmin, upload.single("image"), async (req, res) => {
   // Si se subió un archivo, subirlo a Drive
   if (req.file) {
     try {
+      console.log("Subiendo archivo a Drive:", req.file.originalname);
       const uploaded = await uploadToDrive(
         req.file.buffer,
         req.file.originalname,
@@ -105,6 +109,7 @@ router.post("/", verificarAdmin, upload.single("image"), async (req, res) => {
         null,
       );
       finalImageUrl = uploaded.url;
+      console.log("Archivo subido exitosamente:", finalImageUrl);
     } catch (err) {
       console.error("Error subiendo imagen a Drive:", err);
       return res.status(500).json({ error: "Error al subir la imagen." });
@@ -126,6 +131,7 @@ router.post("/", verificarAdmin, upload.single("image"), async (req, res) => {
         is_published: is_published !== false,
       },
     });
+    console.log("Foto creada exitosamente:", foto.id);
     res.json({ success: true, foto });
   } catch (err) {
     console.error("Error al crear foto:", err);
@@ -136,7 +142,7 @@ router.post("/", verificarAdmin, upload.single("image"), async (req, res) => {
 /**
  * PUT /api/gallery/:id  (admin — actualizar foto)
  */
-router.put("/:id", verificarAdmin, async (req, res) => {
+router.put("/:id", verificarAdmin, upload.single("image"), async (req, res) => {
   const id = parseInt(req.params.id);
   if (isNaN(id)) return res.status(400).json({ error: "ID inválido." });
 
@@ -147,11 +153,30 @@ router.put("/:id", verificarAdmin, async (req, res) => {
     if (!existing)
       return res.status(404).json({ error: "Foto no encontrada." });
 
+    let finalImageUrl = existing.image_url;
+
+    // Si se subió un archivo, subirlo a Drive
+    if (req.file) {
+      try {
+        const uploaded = await uploadToDrive(
+          req.file.buffer,
+          req.file.originalname,
+          req.file.mimetype,
+          null,
+        );
+        finalImageUrl = uploaded.url;
+      } catch (err) {
+        console.error("Error subiendo imagen a Drive:", err);
+        return res.status(500).json({ error: "Error al subir la imagen." });
+      }
+    } else if (image_url?.trim()) {
+      finalImageUrl = image_url.trim();
+    }
+
     const foto = await prisma.foto.update({
       where: { id },
       data: {
-        image_url:
-          image_url !== undefined ? image_url.trim() : existing.image_url,
+        image_url: finalImageUrl,
         caption: caption !== undefined ? caption.trim() : existing.caption,
         sort_order:
           sort_order !== undefined ? parseInt(sort_order) : existing.sort_order,
@@ -161,6 +186,7 @@ router.put("/:id", verificarAdmin, async (req, res) => {
     });
     res.json({ success: true, foto });
   } catch (err) {
+    console.error("Error al actualizar foto:", err);
     res.status(500).json({ error: "Error al actualizar foto." });
   }
 });
