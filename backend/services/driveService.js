@@ -103,6 +103,7 @@ export async function uploadToDrive(buffer, fileName, mimeType, folderId) {
     };
 
     const response = await drive.files.create({
+      ...(folderId ? { supportsAllDrives: true } : {}),
       requestBody: fileMetadata,
       media: { mimeType, body: bufferToStream(buffer) },
       fields: 'id, name, webContentLink, webViewLink',

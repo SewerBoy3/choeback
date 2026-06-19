@@ -52,6 +52,14 @@ async function verificarAdmin(req, res, next) {
   return res.status(401).json({ error: "Acceso no autorizado." });
 }
 
+async function getGalleryFolderId() {
+  const row = await prisma.setting.findUnique({
+    where: { key: "drive_folder_id" },
+  });
+
+  return row?.value?.trim() || process.env.GOOGLE_DRIVE_FOLDER_ID || "";
+}
+
 // ══════════════════════════════════════════════════════════════
 //  FOTOS — GALERÍA
 // ══════════════════════════════════════════════════════════════
@@ -102,11 +110,12 @@ router.post("/", verificarAdmin, upload.single("image"), async (req, res) => {
   if (req.file) {
     try {
       console.log("Subiendo archivo a Drive:", req.file.originalname);
+      const folderId = await getGalleryFolderId();
       const uploaded = await uploadToDrive(
         req.file.buffer,
         req.file.originalname,
         req.file.mimetype,
-        null,
+        folderId,
       );
       finalImageUrl = uploaded.url;
       console.log("Archivo subido exitosamente:", finalImageUrl);
@@ -158,11 +167,12 @@ router.put("/:id", verificarAdmin, upload.single("image"), async (req, res) => {
     // Si se subió un archivo, subirlo a Drive
     if (req.file) {
       try {
+        const folderId = await getGalleryFolderId();
         const uploaded = await uploadToDrive(
           req.file.buffer,
           req.file.originalname,
           req.file.mimetype,
-          null,
+          folderId,
         );
         finalImageUrl = uploaded.url;
       } catch (err) {
