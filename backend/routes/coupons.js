@@ -1,6 +1,5 @@
 import express from 'express';
 import prisma from '../prisma.js';
-import axios from 'axios';
 import dotenv from 'dotenv';
 import { verificarUsuario } from '../middleware/auth.js';
 
@@ -10,9 +9,6 @@ const router = express.Router();
 
 import { notifyFer } from '../services/notificationService.js';
 
-/**
- * Función auxiliar para notificar sobre un canje de cupón a Fer
- */
 async function enviarNotificacionCanje(coupon) {
   const titulo = coupon.title;
   const descripcion = coupon.description;
@@ -26,7 +22,7 @@ async function enviarNotificacionCanje(coupon) {
 
 /**
  * GET /api/coupons
- * Obtiene la lista completa de cupones
+ * Devuelve la lista completa de vales
  */
 router.get('/', async (req, res) => {
   try {
@@ -35,14 +31,14 @@ router.get('/', async (req, res) => {
     });
     res.json(coupons);
   } catch (err) {
-    console.error('Error al obtener cupones de la base de datos:', err.message);
+    console.error('Error al obtener vales:', err.message);
     res.status(500).json({ error: 'Error interno del servidor al consultar la base de datos.' });
   }
 });
 
 /**
  * POST /api/coupons/:id/redeem
- * Marca un cupón específico como canjeado y dispara la notificación del Webhook
+ * Marca un vale como canjeado y avisa a Fer
  */
 router.post('/:id/redeem', verificarUsuario, async (req, res) => {
   const couponId = parseInt(req.params.id);
@@ -94,7 +90,7 @@ router.post('/:id/redeem', verificarUsuario, async (req, res) => {
 
 /**
  * POST /api/coupons/:id/purchase
- * Desbloquea un cupón específico gastando "Monedas de Amor"
+ * Desbloquea un vale gastando Monedas de Amor
  */
 router.post('/:id/purchase', verificarUsuario, async (req, res) => {
   const couponId = parseInt(req.params.id);
@@ -117,7 +113,7 @@ router.post('/:id/purchase', verificarUsuario, async (req, res) => {
       return res.status(400).json({ error: 'Este vale ya ha sido desbloqueado anteriormente.' });
     }
 
-    // Consultar el usuario y verificar sus monedas
+    // Revisar el saldo antes de descontar
     const user = await prisma.user.findUnique({
       where: { id: userId }
     });
@@ -134,7 +130,7 @@ router.post('/:id/purchase', verificarUsuario, async (req, res) => {
       return res.status(400).json({ error: `Monedas insuficientes. Se requieren ${coupon.price} Monedas de Amor (tienes ${user.points}).` });
     }
 
-    // Transacción atómica: descontar monedas y marcar el vale como comprado
+    // Descontar monedas y marcar el vale en una sola operación
     const [updatedUser, updatedCoupon] = await prisma.$transaction([
       prisma.user.update({
         where: { id: userId },
@@ -153,7 +149,7 @@ router.post('/:id/purchase', verificarUsuario, async (req, res) => {
       })
     ]);
 
-    // Enviar notificación a Fer en segundo plano
+    // Avisar a Fer sin frenar la respuesta
     notifyFer(
       `🛍️ ¡Vale Desbloqueado por Zoe!`,
       `Zoe ha comprado el vale:\n**${updatedCoupon.title}**\n\nPor: ${updatedCoupon.price} Monedas de Amor.`,

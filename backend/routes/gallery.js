@@ -24,21 +24,21 @@ async function verificarAdmin(req, res, next) {
         return next();
       }
     } catch (err) {
-      /* caer al fallback */
+      // sigo con la contraseña vieja
     }
   }
 
-  const password = req.headers["x-admin-password"];
-  if (password) {
+  const contrasenaAdmin = req.headers["x-admin-password"];
+  if (contrasenaAdmin) {
     try {
       const row = await prisma.setting.findUnique({
         where: { key: "admin_password" },
       });
       const adminPass = row ? row.value : "Causa2022";
       if (
-        password === adminPass ||
-        password === "Causa2022" ||
-        password === "choe-admin"
+        contrasenaAdmin === adminPass ||
+        contrasenaAdmin === "Causa2022" ||
+        contrasenaAdmin === "choe-admin"
       ) {
         return next();
       }
@@ -60,14 +60,6 @@ async function getGalleryFolderId() {
   return row?.value?.trim() || process.env.GOOGLE_DRIVE_FOLDER_ID || "";
 }
 
-// ══════════════════════════════════════════════════════════════
-//  FOTOS — GALERÍA
-// ══════════════════════════════════════════════════════════════
-
-/**
- * GET /api/gallery
- * Fotos publicadas, ordenadas por sort_order
- */
 router.get("/", async (req, res) => {
   try {
     const fotos = await prisma.foto.findMany({
@@ -81,9 +73,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-/**
- * GET /api/gallery/all  (admin — incluye no publicadas)
- */
 router.get("/all", verificarAdmin, async (req, res) => {
   try {
     const fotos = await prisma.foto.findMany({
@@ -95,9 +84,6 @@ router.get("/all", verificarAdmin, async (req, res) => {
   }
 });
 
-/**
- * POST /api/gallery  (admin — crear foto)
- */
 router.post("/", verificarAdmin, upload.single("image"), async (req, res) => {
   console.log("POST /api/gallery - Body:", req.body);
   console.log("POST /api/gallery - File:", req.file ? "Present" : "None");
@@ -106,7 +92,6 @@ router.post("/", verificarAdmin, upload.single("image"), async (req, res) => {
 
   let finalImageUrl = image_url?.trim() || "";
 
-  // Si se subió un archivo, subirlo a Drive
   if (req.file) {
     try {
       console.log("Subiendo archivo a Drive:", req.file.originalname);
@@ -216,14 +201,6 @@ router.delete("/:id", verificarAdmin, async (req, res) => {
   }
 });
 
-// ══════════════════════════════════════════════════════════════
-//  CARTAS — POEMARIO
-// ══════════════════════════════════════════════════════════════
-
-/**
- * GET /api/gallery/cartas
- * Cartas publicadas, ordenadas por fecha de creación descendente
- */
 router.get("/cartas", async (req, res) => {
   try {
     const cartas = await prisma.carta.findMany({
@@ -237,9 +214,6 @@ router.get("/cartas", async (req, res) => {
   }
 });
 
-/**
- * GET /api/gallery/cartas/all  (admin — todas)
- */
 router.get("/cartas/all", verificarAdmin, async (req, res) => {
   try {
     const cartas = await prisma.carta.findMany({
@@ -251,9 +225,6 @@ router.get("/cartas/all", verificarAdmin, async (req, res) => {
   }
 });
 
-/**
- * POST /api/gallery/cartas  (admin — crear carta)
- */
 router.post("/cartas", verificarAdmin, async (req, res) => {
   const { title, content, is_published, polaroid_image } = req.body;
 

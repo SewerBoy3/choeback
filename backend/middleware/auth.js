@@ -15,6 +15,6 @@ export function verificarUsuario(req, res, next) {
     req.user = decoded;
     next();
   } catch (err) {
-    return res.status(403).json({ error: 'Sesión expirada o inválida. Inicie sesión nuevamente.' });
+    return res.status(403).json({ error: 'Sesión inválida o vencida. Inicia sesión de nuevo.' });
   }
 }

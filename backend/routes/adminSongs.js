@@ -50,7 +50,7 @@ function buildSongData(body, files, req) {
 
   if (!title?.trim()) throw new Error('El título es obligatorio.');
 
-  let data = {
+  const cancionData = {
     title: title.trim(),
     artist: artist.trim(),
     description: description.trim(),
@@ -61,11 +61,9 @@ function buildSongData(body, files, req) {
     source_type,
   };
 
-  parseSectionsJson(data.sections);
+  parseSectionsJson(cancionData.sections);
 
-  const folderId = null; // resolved async in handler
-
-  return { data, folderId, audio_url, cover_url, files };
+  return { data: cancionData, audio_url, cover_url, files };
 }
 
 async function applyFilesAndSource(data, { audio_url, cover_url, files, req, folderId }) {
@@ -134,7 +132,6 @@ router.post(
 
       const cancion = await prisma.cancion.create({ data: finalData });
 
-      // Notificar a Zoe en segundo plano que hay una nueva melodía para ella
       notifyZoe(
         `🎵 Nueva Melodía en Nuestra Sala de Música`,
         `Fer ha agregado una canción especial:\n**${cancion.title}**${cancion.artist ? ` - _${cancion.artist}_` : ''}\n\n"${cancion.description || 'Una hermosa canción para que escuchemos juntos.'}"`,
@@ -168,42 +165,42 @@ router.put(
       const folderId = await getMusicFolderId();
       const { data, audio_url, cover_url } = buildSongData(req.body, req.files, req);
 
-      const finalData = { ...data };
+      const datosFinales = { ...data };
 
       if (req.files?.cover?.[0]) {
         const f = req.files.cover[0];
         const uploaded = await uploadToDrive(f.buffer, f.originalname, f.mimetype, folderId);
-        finalData.cover_url = absolutizeUrl(uploaded.url, req);
-        finalData.cover_drive_id = uploaded.id;
+        datosFinales.cover_url = absolutizeUrl(uploaded.url, req);
+        datosFinales.cover_drive_id = uploaded.id;
       } else if (cover_url?.trim()) {
-        finalData.cover_url = cover_url.trim();
+        datosFinales.cover_url = cover_url.trim();
       } else {
-        finalData.cover_url = existing.cover_url;
-        finalData.cover_drive_id = existing.cover_drive_id;
+        datosFinales.cover_url = existing.cover_url;
+        datosFinales.cover_drive_id = existing.cover_drive_id;
       }
 
       if (req.files?.audio?.[0]) {
         const f = req.files.audio[0];
         const uploaded = await uploadToDrive(f.buffer, f.originalname, f.mimetype, folderId);
-        finalData.audio_url = absolutizeUrl(uploaded.url, req);
-        finalData.audio_drive_id = uploaded.id;
-        finalData.source_type = 'audio_upload';
-        finalData.embed_url = null;
+        datosFinales.audio_url = absolutizeUrl(uploaded.url, req);
+        datosFinales.audio_drive_id = uploaded.id;
+        datosFinales.source_type = 'audio_upload';
+        datosFinales.embed_url = null;
       } else if (audio_url?.trim()) {
-        const parsed = parseMusicSource(audio_url.trim(), finalData.source_type);
+        const parsed = parseMusicSource(audio_url.trim(), datosFinales.source_type);
         if (parsed) {
-          finalData.source_type = parsed.source_type;
-          finalData.audio_url = parsed.audio_url;
-          finalData.embed_url = parsed.embed_url;
+          datosFinales.source_type = parsed.source_type;
+          datosFinales.audio_url = parsed.audio_url;
+          datosFinales.embed_url = parsed.embed_url;
         }
       } else {
-        finalData.audio_url = existing.audio_url;
-        finalData.audio_drive_id = existing.audio_drive_id;
-        finalData.embed_url = existing.embed_url;
-        if (!req.body.source_type) finalData.source_type = existing.source_type;
+        datosFinales.audio_url = existing.audio_url;
+        datosFinales.audio_drive_id = existing.audio_drive_id;
+        datosFinales.embed_url = existing.embed_url;
+        if (!req.body.source_type) datosFinales.source_type = existing.source_type;
       }
 
-      const cancion = await prisma.cancion.update({ where: { id }, data: finalData });
+      const cancion = await prisma.cancion.update({ where: { id }, data: datosFinales });
       res.json({ success: true, song: formatSongForClient(cancion) });
     } catch (err) {
       console.error('Error actualizando canción:', err);

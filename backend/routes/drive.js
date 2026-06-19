@@ -7,28 +7,23 @@ dotenv.config();
 
 const router = express.Router();
 
-/**
- * GET /api/drive/files
- * Retorna la lista de archivos formateados con URLs de descarga directa
- */
 router.get('/files', async (req, res) => {
   try {
-    // 1. Obtener la carpeta de Google Drive configurada en settings usando Prisma
-    const row = await prisma.setting.findUnique({
+    const filaConfiguracion = await prisma.setting.findUnique({
       where: { key: 'drive_folder_id' }
     });
     
     let folderId = req.query.folderId;
     
     if (!folderId) {
-      folderId = (row && row.value) ? row.value.trim() : process.env.GOOGLE_DRIVE_FOLDER_ID;
+      folderId = filaConfiguracion?.value?.trim() || process.env.GOOGLE_DRIVE_FOLDER_ID;
     }
 
     console.log(`Buscando archivos en la carpeta de Google Drive ID: "${folderId || 'Raíz (No configurada)'}"`);
     
     try {
-      const files = await getDriveFiles(folderId);
-      res.json(files);
+      const archivos = await getDriveFiles(folderId);
+      res.json(archivos);
     } catch (error) {
       console.error('Error al listar archivos de Google Drive:', error.message);
       res.status(500).json({ error: 'Error al consultar archivos en Google Drive' });

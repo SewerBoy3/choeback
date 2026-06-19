@@ -19,23 +19,20 @@ import { startDiscordBot } from './services/discordBot.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Cargar variables de entorno desde el archivo .env
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Configurar CORS para permitir peticiones desde el puerto del frontend (Vite: 5173 o similar)
-const whitelist = [
+const origenesPermitidos = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Permitir llamadas sin origen (como herramientas de testeo API, Postman, curl, etc.)
-    if (!origin || whitelist.indexOf(origin) !== -1) {
+const opcionesCors = {
+  origin(origen, callback) {
+    if (!origen || origenesPermitidos.includes(origen)) {
       callback(null, true);
     } else {
       callback(new Error('No permitido por políticas de CORS'));
@@ -46,21 +43,17 @@ const corsOptions = {
   credentials: true
 };
 
-app.use(cors(corsOptions));
+app.use(cors(opcionesCors));
 
-// Middleware para parsear JSON en el cuerpo de las peticiones
 app.use(express.json());
 
-// Archivos subidos localmente (fallback sin Google Drive)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Logger simple para las solicitudes entrantes
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
 });
 
-// Rutas de la API
 app.use('/api/auth', authRouter);
 app.use('/api/coupons', couponRouter);
 app.use('/api/drive', driveRouter);
@@ -70,10 +63,8 @@ app.use('/api/games', gamesRouter);
 app.use('/api/songs', songsRouter);
 app.use('/notify', notifyRouter);
 app.use('/api/gallery', galleryRouter);
-// Mount on root so /test-webhooks matches the router's /test-webhooks and /fer matches /notify/fer if we change notify.js
 app.use('/', notifyRouter);
 
-// Ruta pública para consultar la fecha de aniversario actual de manera dinámica
 app.get('/api/anniversary', async (req, res) => {
   try {
     const row = await prisma.setting.findUnique({
@@ -86,7 +77,6 @@ app.get('/api/anniversary', async (req, res) => {
   }
 });
 
-// Ruta pública para consultar configuraciones no confidenciales
 app.get('/api/public-settings', async (req, res) => {
   try {
     const rows = await prisma.setting.findMany();
@@ -118,7 +108,6 @@ app.get('/api/public-settings', async (req, res) => {
   }
 });
 
-// Ruta de estado general del servidor
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
@@ -128,8 +117,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Iniciar el servidor Express y el bot de Discord
-// En Render, NODE_ENV puede ser 'production', así que solo evitamos el listen si estamos en Vercel
 if (process.env.VERCEL !== '1') {
   app.listen(PORT, () => {
     console.log(`=======================================================`);
@@ -142,14 +129,11 @@ if (process.env.VERCEL !== '1') {
     startDiscordBot();
   });
 } else {
-  // Entorno Serverless (Vercel) donde el servidor no queda escuchando pero necesitamos iniciar el bot
   startDiscordBot();
 }
 
-// Exportar la app para Vercel (Serverless Functions)
 export default app;
 
-// Manejadores de seguridad global para evitar que el servidor crashee
 process.on('unhandledRejection', (reason, promise) => {
   console.error('💥 RECHAZO DE PROMESA NO MANEJADO en:', promise, 'razón:', reason);
 });

@@ -54,7 +54,7 @@ export async function loadGameConfig(prisma) {
       if (!isNaN(v) && v > 0) config.tetris.divisor = v;
     }
   } catch {
-    // Usar defaults si falla la lectura
+    // Si falla la lectura, se quedan los valores por defecto.
   }
 
   return config;

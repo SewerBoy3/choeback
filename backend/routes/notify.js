@@ -76,7 +76,7 @@ router.post('/test-webhooks', verifyBotReady, async (req, res) => {
   if (!ferId || !zoeId) {
     return res.status(400).json({
       success: false,
-      error: 'Las variables FER_DISCORD_ID y/O ZOE_DISCORD_ID no están configuradas.'
+      error: 'Las variables FER_DISCORD_ID y/o ZOE_DISCORD_ID no están configuradas.'
     });
   }
 

@@ -67,7 +67,6 @@ async function sendDiscordDM(botToken, recipientId, title, description, color, c
  */
 async function sendNotification({ target, title, description, color = 0xFFB6C1 }) {
   try {
-    // 1. Obtener configuraciones de la base de datos
     const rows = await prisma.setting.findMany();
     const settings = {};
     rows.forEach(row => {
@@ -84,28 +83,26 @@ async function sendNotification({ target, title, description, color = 0xFFB6C1 }
 
     const ahora = new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' });
 
-    // Determinar destinatario
-    let targetDiscordId = '';
-    let mentionLabel = '';
-    let mentionText = '';
+    let destinatarioDiscordId = '';
+    let etiquetaMencion = '';
+    let textoMencion = '';
 
     if (target === 'fer') {
-      targetDiscordId = ferDiscordId;
-      mentionText = ferDiscordId ? `<@${ferDiscordId.trim()}>` : '';
-      mentionLabel = 'Para: Fer (Admin)';
+      destinatarioDiscordId = ferDiscordId;
+      textoMencion = ferDiscordId ? `<@${ferDiscordId.trim()}>` : '';
+      etiquetaMencion = 'Para: Fer (Admin)';
     } else if (target === 'zoe') {
-      targetDiscordId = zoeDiscordId;
-      mentionText = zoeDiscordId ? `<@${zoeDiscordId.trim()}>` : '';
-      mentionLabel = 'Para: Zoe (Usuario)';
+      destinatarioDiscordId = zoeDiscordId;
+      textoMencion = zoeDiscordId ? `<@${zoeDiscordId.trim()}>` : '';
+      etiquetaMencion = 'Para: Zoe (Usuario)';
     }
 
-    const contentText = `🔔 **NOTIFICACIÓN CHOE-OS** 🔔\n\n` +
+    const textoContenido = `🔔 **NOTIFICACIÓN CHOE-OS** 🔔\n\n` +
       `**${title}**\n` +
       `📝 ${description}\n` +
       `⏰ **Fecha:** ${ahora} (ARG)\n` +
       `💖 *Choe-OS System*`;
 
-    // 2. Intentar enviar DM privado usando el nuevo microservicio de bot de Discord (si está configurado)
     let sentViaDM = false;
     const DISCORD_BOT_URL = process.env.DISCORD_BOT_URL || settings.discord_bot_url || null;
 
@@ -114,7 +111,7 @@ async function sendNotification({ target, title, description, color = 0xFFB6C1 }
         const endpoint = target === 'fer' ? '/notify/fer' : '/notify/zoe';
         const response = await axios.post(`${DISCORD_BOT_URL.replace(/\/$/, '')}${endpoint}`, {
           action: title,
-          message: contentText
+          message: textoContenido
         });
         if (response.status === 200) {
           sentViaDM = true;
@@ -126,24 +123,22 @@ async function sendNotification({ target, title, description, color = 0xFFB6C1 }
       }
     }
 
-    // Fallback al método directo de Discord API si no se usó o falló el microservicio
-    if (!sentViaDM && DISCORD_BOT_TOKEN && targetDiscordId) {
+    if (!sentViaDM && DISCORD_BOT_TOKEN && destinatarioDiscordId) {
       sentViaDM = await sendDiscordDM(
         DISCORD_BOT_TOKEN,
-        targetDiscordId,
+        destinatarioDiscordId,
         title,
         description,
         color,
-        contentText
+        textoContenido
       );
     }
 
-    // 3. Fallback a Webhook público si falló el DM o si no está configurado el Bot
     if (!sentViaDM && DISCORD_WEBHOOK_URL) {
       try {
-        const publicContent = `${mentionText} ${contentText}`;
+        const contenidoPublico = `${textoMencion} ${textoContenido}`;
         await axios.post(DISCORD_WEBHOOK_URL, {
-          content: publicContent,
+          content: contenidoPublico,
           embeds: [
             {
               title: title,
@@ -151,7 +146,7 @@ async function sendNotification({ target, title, description, color = 0xFFB6C1 }
               color: color,
               fields: [
                 { name: 'Fecha y Hora (ARG)', value: ahora, inline: true },
-                { name: 'Destinatario', value: mentionLabel || 'General', inline: true }
+                { name: 'Destinatario', value: etiquetaMencion || 'General', inline: true }
               ],
               footer: { text: 'Choe-OS • Canal Público' }
             }
@@ -163,18 +158,17 @@ async function sendNotification({ target, title, description, color = 0xFFB6C1 }
       }
     }
 
-    // 4. Enviar a Telegram
     if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
       try {
         const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-        const telegramText = `🔔 *NOTIFICACIÓN CHOE-OS*\n\n` +
+        const textoTelegram = `🔔 *NOTIFICACIÓN CHOE-OS*\n\n` +
           `*${title}*\n` +
           `📝 ${description}\n` +
           `⏰ ${ahora} (ARG)`;
 
         await axios.post(telegramUrl, {
           chat_id: TELEGRAM_CHAT_ID,
-          text: telegramText,
+          text: textoTelegram,
           parse_mode: 'Markdown'
         });
         console.log('🚀 Notificación de Telegram enviada con éxito.');
@@ -187,23 +181,14 @@ async function sendNotification({ target, title, description, color = 0xFFB6C1 }
   }
 }
 
-/**
- * Notificar a Fer (Admin) sobre acciones hechas por Zoe
- */
 export async function notifyFer(title, description, color = 0xFBBF24) {
   return sendNotification({ target: 'fer', title, description, color });
 }
 
-/**
- * Notificar a Zoe (Usuario) sobre sorpresas o acciones hechas por Fer
- */
 export async function notifyZoe(title, description, color = 0xF472B6) {
   return sendNotification({ target: 'zoe', title, description, color });
 }
 
-/**
- * Notificación general
- */
 export async function notifyGeneral(title, description, color = 0x818CF8) {
   return sendNotification({ target: 'general', title, description, color });
 }

@@ -2,13 +2,17 @@
 import { v2 as cloudinary } from 'cloudinary';
 
 cloudinary.config({
-  cloud_name: 'don1wbiru',
-  api_key: '869142445523231',
-  api_secret: 'rOj9MM9wK4Kr0iEZHnOHU-dspM4',
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
   secure: true,
 });
 
 async function main() {
+  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+    throw new Error('Faltan variables de entorno de Cloudinary.');
+  }
+
   const sampleImageUrl = 'https://res.cloudinary.com/demo/image/upload/sample.jpg';
 
   console.log('Uploading sample image from Cloudinary demo domain...');

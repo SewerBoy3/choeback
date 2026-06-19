@@ -15,16 +15,16 @@ export async function verificarAdmin(req, res, next) {
         return next();
       }
     } catch {
-      // fallback legacy
+      // sigo con el fallback por contraseña
     }
   }
 
-  const password = req.headers['x-admin-password'];
-  if (password) {
+  const contrasenaAdmin = req.headers['x-admin-password'];
+  if (contrasenaAdmin) {
     try {
       const row = await prisma.setting.findUnique({ where: { key: 'admin_password' } });
       const adminPass = row ? row.value : 'Causa2022';
-      if (password === adminPass || password === 'Causa2022' || password === 'choe-admin') {
+      if (contrasenaAdmin === adminPass || contrasenaAdmin === 'Causa2022' || contrasenaAdmin === 'choe-admin') {
         return next();
       }
     } catch {

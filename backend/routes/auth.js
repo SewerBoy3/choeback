@@ -14,20 +14,20 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({ error: 'Usuario y contraseña son requeridos.' });
   }
 
-  const userClean = username.trim().toLowerCase();
-  const passClean = password.trim();
+  const usuarioLimpio = username.trim().toLowerCase();
+  const contrasenaLimpia = password.trim();
 
   try {
     const user = await prisma.user.findUnique({
-      where: { username: userClean }
+      where: { username: usuarioLimpio }
     });
 
     if (!user) {
       return res.status(401).json({ error: 'ERROR: ACCESO DENEGADO' });
     }
 
-    const validPassword = await bcrypt.compare(passClean, user.password);
-    if (!validPassword) {
+    const contrasenaValida = await bcrypt.compare(contrasenaLimpia, user.password);
+    if (!contrasenaValida) {
       return res.status(401).json({ error: 'ERROR: ACCESO DENEGADO' });
     }
 

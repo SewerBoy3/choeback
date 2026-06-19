@@ -4,13 +4,10 @@ import prisma from './prisma.js';
 
 dotenv.config();
 
-// db es un objeto vacío de compatibilidad — la app usa Prisma (PostgreSQL) en producción
 const db = {};
 
-// Función de siembra asíncrona con Prisma
 async function seedData() {
   try {
-    // 1. Sembrar usuarios (choe y fer)
     const userCount = await prisma.user.count();
     if (userCount === 0) {
       const salt = await bcrypt.genSalt(10);
@@ -26,7 +23,6 @@ async function seedData() {
       console.log('🌱 Prisma: Usuarios choe y fer sembrados con éxito.');
     }
 
-    // 2. Sembrar configuraciones por defecto
     const settingsCount = await prisma.setting.count();
     if (settingsCount === 0) {
       const settingsDefecto = {
@@ -63,7 +59,6 @@ async function seedData() {
       console.log('🌱 Prisma: Configuraciones por defecto sembradas.');
     }
 
-    // 3. Sembrar cupones por defecto si está vacío
     const couponsCount = await prisma.vale.count();
     if (couponsCount === 0) {
       const cuponesSemilla = [
@@ -90,7 +85,6 @@ async function seedData() {
       console.log('🌱 Prisma: Cupones semilla insertados.');
     }
 
-    // 4. Migrar precios de vales existentes (solo si siguen en el precio legacy 50)
     const valesLegacy = await prisma.vale.findMany({ where: { price: 50 } });
     if (valesLegacy.length > 0) {
       const priceByTitle = {
@@ -106,7 +100,6 @@ async function seedData() {
       }
     }
 
-    // 5. Asegurar settings de economía en instalaciones existentes
     const economyKeys = {
       dino_coin_divisor: '8',
       tetris_coin_divisor: '40',
@@ -127,7 +120,6 @@ async function seedData() {
       if (!exists) await prisma.setting.create({ data: { key, value } });
     }
 
-    // Canción de ejemplo si la biblioteca está vacía
     const songCount = await prisma.cancion.count();
     if (songCount === 0) {
       await prisma.cancion.create({
@@ -164,8 +156,6 @@ async function seedData() {
   }
 }
 
-// Ejecutar la siembra SOLO si se pide explícitamente con FORCE_SEED=1
-// Esto evita que cada deploy/restart en Render reinserte datos por defecto
 if (process.env.FORCE_SEED === '1') {
   console.log('🌱 FORCE_SEED=1 detectado: ejecutando siembra...');
   seedData();

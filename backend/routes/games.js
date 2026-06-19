@@ -12,15 +12,14 @@ import {
 
 const router = express.Router();
 
-// GET /api/games/economy — info pública del sistema de monedas
 router.get('/economy', async (req, res) => {
   try {
     const config = await loadGameConfig(prisma);
-    const settingsRows = await prisma.setting.findMany({
+    const filasConfiguracion = await prisma.setting.findMany({
       where: { key: 'coin_daily_bonus' },
     });
-    const settingsMap = Object.fromEntries(settingsRows.map((r) => [r.key, r.value]));
-    const dailyBonus = getDailyBonusFromSettings(settingsMap);
+    const mapaConfiguracion = Object.fromEntries(filasConfiguracion.map((r) => [r.key, r.value]));
+    const dailyBonus = getDailyBonusFromSettings(mapaConfiguracion);
 
     res.json(getEconomyInfo(config, dailyBonus));
   } catch (err) {
@@ -29,7 +28,6 @@ router.get('/economy', async (req, res) => {
   }
 });
 
-// POST /api/games/score
 router.post('/score', verificarUsuario, async (req, res) => {
   const { game_name, score } = req.body;
   const userId = req.user.id;
@@ -40,7 +38,7 @@ router.post('/score', verificarUsuario, async (req, res) => {
 
   try {
     const gameKey = game_name.toLowerCase();
-    const newScore = parseInt(score);
+    const puntajeNuevo = parseInt(score);
 
     const config = await loadGameConfig(prisma);
 
@@ -48,11 +46,11 @@ router.post('/score', verificarUsuario, async (req, res) => {
       return res.status(400).json({ error: 'Juego no reconocido.' });
     }
 
-    const previousBest = await prisma.puntuacionJuego.findFirst({
+    const mejorAnterior = await prisma.puntuacionJuego.findFirst({
       where: { user_id: userId, game_name: gameKey },
       orderBy: { score: 'desc' },
     });
-    const oldBest = previousBest?.score || 0;
+    const oldBest = mejorAnterior?.score || 0;
 
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
@@ -64,15 +62,15 @@ router.post('/score', verificarUsuario, async (req, res) => {
     });
     const isFirstGameToday = gamesTodayBefore === 0;
 
-    const settingsRows = await prisma.setting.findMany({
+    const filasConfiguracion = await prisma.setting.findMany({
       where: { key: 'coin_daily_bonus' },
     });
-    const settingsMap = Object.fromEntries(settingsRows.map((r) => [r.key, r.value]));
-    const dailyBonus = getDailyBonusFromSettings(settingsMap);
+    const mapaConfiguracion = Object.fromEntries(filasConfiguracion.map((r) => [r.key, r.value]));
+    const dailyBonus = getDailyBonusFromSettings(mapaConfiguracion);
 
     const { total: pointsAwarded, breakdown, isNewRecord } = calculateCoins(
       gameKey,
-      newScore,
+      puntajeNuevo,
       oldBest,
       isFirstGameToday,
       config,
@@ -82,7 +80,7 @@ router.post('/score', verificarUsuario, async (req, res) => {
     await prisma.puntuacionJuego.create({
       data: {
         game_name: gameKey,
-        score: newScore,
+        score: puntajeNuevo,
         user_id: userId,
       },
     });

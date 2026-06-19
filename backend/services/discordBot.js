@@ -27,8 +27,8 @@ export async function sendDM(userId, messageContent) {
   if (!userId) {
     throw new Error('MISSING_USER_ID');
   }
-  const user = await client.users.fetch(userId);
-  await user.send(messageContent);
+  const usuario = await client.users.fetch(userId);
+  await usuario.send(messageContent);
 }
 
 export function handleDiscordError(error, res) {

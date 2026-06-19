@@ -1,6 +1,3 @@
-/**
- * Parsea enlaces de música para Spotify, YouTube y audio directo.
- */
 export function parseMusicSource(url, sourceType = 'auto') {
   if (!url?.trim()) return null;
 
@@ -53,7 +50,7 @@ export function parseSectionsJson(raw) {
 
 export function formatSongForClient(cancion) {
   const sections = parseSectionsJson(cancion.sections);
-  const type =
+  const tipo =
     cancion.source_type === 'spotify'
       ? 'spotify'
       : cancion.source_type === 'youtube'
@@ -61,11 +58,11 @@ export function formatSongForClient(cancion) {
         : 'audio';
 
   const embedHeight =
-    type === 'spotify'
+    tipo === 'spotify'
       ? cancion.embed_url?.includes('/album/') || cancion.embed_url?.includes('/playlist/')
         ? 352
         : 152
-      : type === 'youtube'
+      : tipo === 'youtube'
         ? 200
         : 0;
 
