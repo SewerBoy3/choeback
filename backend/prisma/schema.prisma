@@ -61,10 +61,8 @@ model Cancion {
   artist         String   @default("")
   description    String   @default("")   // Leyenda corta visible en la tarjeta
   cover_url      String?
-  cover_drive_id String?
   source_type    String   @default("audio_link")
   audio_url      String?  // Ahora es el link externo (Spotify, YouTube, etc.)
-  audio_drive_id String?
   embed_url      String?
   lyrics         String   @default("")
   sections       String   @default("[]")
@@ -78,7 +76,7 @@ model Cancion {
 
 model Foto {
   id           Int      @id @default(autoincrement())
-  image_url    String                        // URL de la imagen (Drive, Imgur, etc.)
+  image_url    String                        // URL de la imagen (Cloudinary, Imgur, etc.)
   caption      String   @default("")         // Frase que acompaña la foto
   sort_order   Int      @default(0)
   is_published Boolean  @default(true)

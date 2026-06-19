@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import prisma from '../prisma.js';
-import { uploadToDrive } from '../services/driveService.js';
+import { subirArchivoBuffer } from '../services/cloudinaryStorage.js';
 import {
   parseMusicSource,
   parseSectionsJson,
@@ -15,24 +15,6 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 50 * 1024 * 1024 },
 });
-
-async function getMusicFolderId() {
-  const musicFolder = await prisma.setting.findUnique({
-    where: { key: 'music_drive_folder_id' },
-  });
-  if (musicFolder?.value?.trim()) return musicFolder.value.trim();
-
-  const mainFolder = await prisma.setting.findUnique({
-    where: { key: 'drive_folder_id' },
-  });
-  return mainFolder?.value?.trim() || process.env.GOOGLE_DRIVE_FOLDER_ID || '';
-}
-
-function absolutizeUrl(url, req) {
-  if (!url) return null;
-  if (url.startsWith('http')) return url;
-  return `${req.protocol}://${req.get('host')}${url}`;
-}
 
 function buildSongData(body, files, req) {
   const {
@@ -66,21 +48,29 @@ function buildSongData(body, files, req) {
   return { data: cancionData, audio_url, cover_url, files };
 }
 
-async function applyFilesAndSource(data, { audio_url, cover_url, files, req, folderId }) {
+async function applyFilesAndSource(data, { audio_url, cover_url, files }) {
   if (files?.cover?.[0]) {
     const f = files.cover[0];
-    const uploaded = await uploadToDrive(f.buffer, f.originalname, f.mimetype, folderId);
-    data.cover_url = absolutizeUrl(uploaded.url, req);
-    data.cover_drive_id = uploaded.id;
+    const uploaded = await subirArchivoBuffer({
+      buffer: f.buffer,
+      fileName: f.originalname,
+      mimeType: f.mimetype,
+      prefix: 'cover'
+    });
+    data.cover_url = uploaded.secureUrl;
   } else if (cover_url?.trim()) {
     data.cover_url = cover_url.trim();
   }
 
   if (files?.audio?.[0]) {
     const f = files.audio[0];
-    const uploaded = await uploadToDrive(f.buffer, f.originalname, f.mimetype, folderId);
-    data.audio_url = absolutizeUrl(uploaded.url, req);
-    data.audio_drive_id = uploaded.id;
+    const uploaded = await subirArchivoBuffer({
+      buffer: f.buffer,
+      fileName: f.originalname,
+      mimeType: f.mimetype,
+      prefix: 'audio'
+    });
+    data.audio_url = uploaded.secureUrl;
     data.source_type = 'audio_upload';
     data.embed_url = null;
   } else if (data.source_type === 'audio_upload') {
@@ -120,14 +110,11 @@ router.post(
   ]),
   async (req, res) => {
     try {
-      const folderId = await getMusicFolderId();
       const { data, audio_url, cover_url, files } = buildSongData(req.body, req.files, req);
       const finalData = await applyFilesAndSource(data, {
         audio_url,
         cover_url,
         files: req.files,
-        req,
-        folderId,
       });
 
       const cancion = await prisma.cancion.create({ data: finalData });
@@ -162,28 +149,34 @@ router.put(
       const existing = await prisma.cancion.findUnique({ where: { id } });
       if (!existing) return res.status(404).json({ error: 'Canción no encontrada.' });
 
-      const folderId = await getMusicFolderId();
       const { data, audio_url, cover_url } = buildSongData(req.body, req.files, req);
 
       const datosFinales = { ...data };
 
       if (req.files?.cover?.[0]) {
         const f = req.files.cover[0];
-        const uploaded = await uploadToDrive(f.buffer, f.originalname, f.mimetype, folderId);
-        datosFinales.cover_url = absolutizeUrl(uploaded.url, req);
-        datosFinales.cover_drive_id = uploaded.id;
+        const uploaded = await subirArchivoBuffer({
+          buffer: f.buffer,
+          fileName: f.originalname,
+          mimeType: f.mimetype,
+          prefix: 'cover'
+        });
+        datosFinales.cover_url = uploaded.secureUrl;
       } else if (cover_url?.trim()) {
         datosFinales.cover_url = cover_url.trim();
       } else {
         datosFinales.cover_url = existing.cover_url;
-        datosFinales.cover_drive_id = existing.cover_drive_id;
       }
 
       if (req.files?.audio?.[0]) {
         const f = req.files.audio[0];
-        const uploaded = await uploadToDrive(f.buffer, f.originalname, f.mimetype, folderId);
-        datosFinales.audio_url = absolutizeUrl(uploaded.url, req);
-        datosFinales.audio_drive_id = uploaded.id;
+        const uploaded = await subirArchivoBuffer({
+          buffer: f.buffer,
+          fileName: f.originalname,
+          mimeType: f.mimetype,
+          prefix: 'audio'
+        });
+        datosFinales.audio_url = uploaded.secureUrl;
         datosFinales.source_type = 'audio_upload';
         datosFinales.embed_url = null;
       } else if (audio_url?.trim()) {
@@ -195,7 +188,6 @@ router.put(
         }
       } else {
         datosFinales.audio_url = existing.audio_url;
-        datosFinales.audio_drive_id = existing.audio_drive_id;
         datosFinales.embed_url = existing.embed_url;
         if (!req.body.source_type) datosFinales.source_type = existing.source_type;
       }

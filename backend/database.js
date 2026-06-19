@@ -30,13 +30,11 @@ async function seedData() {
         discord_webhook: process.env.DISCORD_WEBHOOK_URL || '',
         telegram_token: process.env.TELEGRAM_BOT_TOKEN || '',
         telegram_chat_id: process.env.TELEGRAM_CHAT_ID || '',
-        drive_folder_id: process.env.GOOGLE_DRIVE_FOLDER_ID || '',
         admin_password: 'Causa2022',
         timeline_greeting: '¡Bienvenido a nuestro álbum especial de recuerdos! ♡',
         anniversary_message: '¡Feliz Aniversario mi amor!',
         default_song_url: '',
         music_playlist: '',
-        music_drive_folder_id: '',
         music_autoplay: 'false',
         dino_speed_multiplier: '1.0',
         tetris_start_level: '1',
@@ -115,7 +113,7 @@ async function seedData() {
       }
     }
 
-    for (const [key, value] of Object.entries({ music_playlist: '', music_drive_folder_id: '' })) {
+    for (const [key, value] of Object.entries({ music_playlist: '' })) {
       const exists = await prisma.setting.findUnique({ where: { key } });
       if (!exists) await prisma.setting.create({ data: { key, value } });
     }

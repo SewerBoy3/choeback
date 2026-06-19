@@ -2,7 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import multer from "multer";
 import prisma from "../prisma.js";
-import { uploadToDrive } from "../services/driveService.js";
+import { subirArchivoBuffer } from "../services/cloudinaryStorage.js";
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "choe-os-secret-key-16bit";
@@ -52,14 +52,6 @@ async function verificarAdmin(req, res, next) {
   return res.status(401).json({ error: "Acceso no autorizado." });
 }
 
-async function getGalleryFolderId() {
-  const row = await prisma.setting.findUnique({
-    where: { key: "drive_folder_id" },
-  });
-
-  return row?.value?.trim() || process.env.GOOGLE_DRIVE_FOLDER_ID || "";
-}
-
 router.get("/", async (req, res) => {
   try {
     const fotos = await prisma.foto.findMany({
@@ -94,18 +86,15 @@ router.post("/", verificarAdmin, upload.single("image"), async (req, res) => {
 
   if (req.file) {
     try {
-      console.log("Subiendo archivo a Drive:", req.file.originalname);
-      const folderId = await getGalleryFolderId();
-      const uploaded = await uploadToDrive(
-        req.file.buffer,
-        req.file.originalname,
-        req.file.mimetype,
-        folderId,
-      );
-      finalImageUrl = uploaded.url;
-      console.log("Archivo subido exitosamente:", finalImageUrl);
+      const uploaded = await subirArchivoBuffer({
+        buffer: req.file.buffer,
+        fileName: req.file.originalname,
+        mimeType: req.file.mimetype,
+        prefix: 'gallery'
+      });
+      finalImageUrl = uploaded.secureUrl;
     } catch (err) {
-      console.error("Error subiendo imagen a Drive:", err);
+      console.error("Error subiendo imagen a Cloudinary:", err);
       return res.status(500).json({ error: "Error al subir la imagen." });
     }
   }
@@ -149,19 +138,17 @@ router.put("/:id", verificarAdmin, upload.single("image"), async (req, res) => {
 
     let finalImageUrl = existing.image_url;
 
-    // Si se subió un archivo, subirlo a Drive
     if (req.file) {
       try {
-        const folderId = await getGalleryFolderId();
-        const uploaded = await uploadToDrive(
-          req.file.buffer,
-          req.file.originalname,
-          req.file.mimetype,
-          folderId,
-        );
-        finalImageUrl = uploaded.url;
+        const uploaded = await subirArchivoBuffer({
+          buffer: req.file.buffer,
+          fileName: req.file.originalname,
+          mimeType: req.file.mimetype,
+          prefix: 'gallery'
+        });
+        finalImageUrl = uploaded.secureUrl;
       } catch (err) {
-        console.error("Error subiendo imagen a Drive:", err);
+        console.error("Error subiendo imagen a Cloudinary:", err);
         return res.status(500).json({ error: "Error al subir la imagen." });
       }
     } else if (image_url?.trim()) {

@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import couponRouter from './routes/coupons.js';
-import driveRouter from './routes/drive.js';
 import adminRouter from './routes/admin.js';
 import adminSongsRouter from './routes/adminSongs.js';
 import authRouter from './routes/auth.js';
@@ -56,7 +55,6 @@ app.use((req, res, next) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/coupons', couponRouter);
-app.use('/api/drive', driveRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/admin', adminSongsRouter);
 app.use('/api/games', gamesRouter);
@@ -86,7 +84,6 @@ app.get('/api/public-settings', async (req, res) => {
       anniversary_message: '¡Feliz Aniversario mi amor!',
       default_song_url: '',
       music_playlist: '',
-      music_drive_folder_id: '',
       music_autoplay: 'false',
       dino_speed_multiplier: '1.0',
       tetris_start_level: '1',
@@ -122,7 +119,6 @@ if (process.env.VERCEL !== '1') {
     console.log(`=======================================================`);
     console.log(`🚀 Servidor Express ejecutándose en el puerto: ${PORT}`);
     console.log(`🔗 API de Cupones:  http://localhost:${PORT}/api/coupons`);
-    console.log(`🔗 API de Drive:    http://localhost:${PORT}/api/drive/files`);
     console.log(`🔗 API de Admin:    http://localhost:${PORT}/api/admin`);
     console.log(`🔗 API Aniversario: http://localhost:${PORT}/api/anniversary`);
     console.log(`=======================================================`);
