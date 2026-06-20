@@ -118,6 +118,8 @@ router.post(
       });
 
       const cancion = await prisma.cancion.create({ data: finalData });
+      
+      const formattedSong = formatSongForClient(cancion);
 
       notifyZoe(
         `🎵 Nueva Melodía en Nuestra Sala de Música`,
@@ -125,7 +127,7 @@ router.post(
         0xF472B6
       );
 
-      res.json({ success: true, song: formatSongForClient(cancion) });
+      res.json({ success: true, song: formattedSong });
     } catch (err) {
       console.error('Error creando canción:', err);
       res.status(400).json({ error: err.message || 'Error al crear la canción.' });

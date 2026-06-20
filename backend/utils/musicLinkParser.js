@@ -69,7 +69,7 @@ export function formatSongForClient(cancion) {
   return {
     id: `song-${cancion.id}`,
     dbId: cancion.id,
-    type,
+    type: tipo,
     name: cancion.title,
     artist: cancion.artist || '',
     description: cancion.description || '',
