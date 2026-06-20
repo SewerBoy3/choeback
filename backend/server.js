@@ -92,7 +92,7 @@ app.get('/api/public-settings', async (req, res) => {
       coin_daily_bonus: '5'
     };
     if (rows) {
-      const sensitiveKeys = ['discord_webhook', 'telegram_token', 'telegram_chat_id', 'admin_password'];
+      const sensitiveKeys = ['discord_webhook', 'telegram_token', 'telegram_chat_id', 'admin_password', 'discord_bot_token'];
       rows.forEach(row => {
         if (!sensitiveKeys.includes(row.key)) {
           publicSettings[row.key] = row.value;

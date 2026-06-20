@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import prisma from '../prisma.js';
 import axios from 'axios';
 import { notifyZoe, notifyFer } from '../services/notificationService.js';
+import { startDiscordBot } from '../services/discordBot.js';
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'choe-os-secret-key-16bit';
@@ -70,6 +71,14 @@ router.post('/settings', verificarAdmin, async (req, res) => {
         });
       })
     );
+
+    // Si se actualizó el token del bot de Discord, intentamos inicializarlo/reiniciarlo
+    if (configuraciones.discord_bot_token !== undefined) {
+      startDiscordBot(configuraciones.discord_bot_token).catch(err => {
+        console.error('Error al iniciar/reiniciar el bot con el nuevo token:', err.message);
+      });
+    }
+
     res.json({ success: true, message: 'Configuraciones guardadas con éxito.' });
   } catch (err) {
     console.error('Error al guardar configuraciones:', err.message);
@@ -211,26 +220,48 @@ router.post('/verify', async (req, res) => {
 });
 
 router.post('/test-webhook', verificarAdmin, async (req, res) => {
+  const errors = [];
+
+  // Probamos Fer
   try {
-    await notifyFer(
+    const successFer = await notifyFer(
       '🔔 Conexión Exitosa (Mensaje de Prueba)',
       '¡Hola Fer! Este es un mensaje privado de prueba enviado desde tu Choe-OS para validar el sistema de notificaciones.',
       0x86EFAC
     );
+    if (!successFer) {
+      errors.push('No se pudo enviar el mensaje a Fer (verifica su ID de Discord y que comparta un servidor con el bot y tenga los DMs abiertos).');
+    }
+  } catch (err) {
+    errors.push(`Error con Fer: ${err.message}`);
+  }
 
-    await notifyZoe(
+  // Probamos Zoe
+  try {
+    const successZoe = await notifyZoe(
       '🔔 Conexión Exitosa (Mensaje de Prueba)',
       '¡Hola Zoe! Este es un mensaje privado de prueba enviado desde el Choe-OS para validar el sistema de notificaciones.',
       0x86EFAC
     );
-
-    res.json({
-      success: true,
-      message: 'Notificaciones de prueba enviadas con éxito.'
-    });
+    if (!successZoe) {
+      errors.push('No se pudo enviar el mensaje a Zoe (verifica su ID de Discord y que comparta un servidor con el bot y tenga los DMs abiertos).');
+    }
   } catch (err) {
-    res.status(500).json({ error: 'Error al procesar la prueba del webhook: ' + err.message });
+    errors.push(`Error con Zoe: ${err.message}`);
   }
+
+  if (errors.length > 0) {
+    return res.status(200).json({
+      success: false,
+      errors: errors,
+      message: `La prueba de conexión falló: ${errors.join(' | ')}`
+    });
+  }
+
+  res.json({
+    success: true,
+    message: '¡ÉXITO! Mensajes de prueba enviados a Fer y Zoe por privado.'
+  });
 });
 
 router.get('/users', verificarAdmin, async (req, res) => {
