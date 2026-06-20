@@ -14,7 +14,7 @@ import galleryRouter from './routes/gallery.js';
 import likesRouter from './routes/likes.js';
 import db from './database.js';
 import prisma from './prisma.js';
-import { startDiscordBot } from './services/discordBot.js';
+import { startDiscordBot, notifyAdminError } from './services/discordBot.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -134,9 +134,11 @@ export default app;
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('💥 RECHAZO DE PROMESA NO MANEJADO en:', promise, 'razón:', reason);
+  notifyAdminError('unhandledRejection', reason).catch(() => {});
 });
 
 process.on('uncaughtException', (err) => {
   console.error('💥 EXCEPCIÓN NO CAPTURADA:', err);
+  notifyAdminError('uncaughtException', err).catch(() => {});
 });
 

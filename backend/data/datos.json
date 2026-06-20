@@ -1,0 +1,302 @@
+[
+  {
+    "id": 1,
+    "tema": "Arquitectura",
+    "mensaje": "Majestad, le traigo un dato arquitectónico fascinante: La Gran Pirámide de Guiza fue el edificio más alto del mundo durante 3.800 años, manteniendo ese título desde su construcción alrededor del 2560 a.C. hasta que la Catedral de Lincoln la superó en 1311. Sus 2.3 millones de bloques de piedra, algunos de hasta 80 toneladas, fueron tallados y colocados con una precisión tan extrema que apenas se puede insertar una hoja de papel entre las juntas. Un nivel de ingeniería que el admin jamás alcanzará, considerando que ayer pasó tres horas intentando que su página subiera una imagen, y terminó usando un plugin de WordPress hecho por otra persona."
+  },
+  {
+    "id": 2,
+    "tema": "Música",
+    "mensaje": "Estimada Jefa, un dato musical digno de admiración: Jimi Hendrix aprendió a tocar guitarra de forma completamente autodidacta en apenas un mes, tomando prestada la guitarra de su padre y reinventando su técnica al tocarla invertida por ser zurdo. En cuestión de pocos años pasó de ese primer mes de práctica a convertirse en uno de los guitarristas más influyentes de la historia del rock. El admin, en cambio, lleva dos años 'aprendiendo' Git y todavía hace push directo a la rama main sin pestañear."
+  },
+  {
+    "id": 3,
+    "tema": "Historia",
+    "mensaje": "Majestad, en 1492 Cristóbal Colón cruzó el océano Atlántico con tres carabelas —la Niña, la Pinta y la Santa María— recorriendo cerca de 5.600 kilómetros sin instrumentos de navegación modernos, guiándose solo por las estrellas y la experiencia marítima de su tripulación. El viaje duró 71 días bajo condiciones de incertidumbre constante. El admin intentó la semana pasada escribir una simple consulta SQL y terminó borrando accidentalmente la base de datos de pruebas, descubriéndolo recién una hora después."
+  },
+  {
+    "id": 4,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Mi Reina, un dato artístico que demuestra paciencia infinita: Leonardo da Vinci tardó aproximadamente 15 años en completar la Mona Lisa, retocándola gradualmente y perfeccionando la técnica del sfumato, esa transición de colores sin líneas visibles que le da a la sonrisa de Lisa Gherardini su famosa ambigüedad. Cada detalle, desde los reflejos en los ojos hasta el paisaje de fondo, fue calculado con una obsesión casi científica. El admin subió un doodle hecho en cinco minutos a su portfolio profesional y lo llamó, con total seriedad, 'su obra maestra'."
+  },
+  {
+    "id": 5,
+    "tema": "Cinematografía",
+    "mensaje": "Excelentísima Jefa, un dato cinematográfico de proporciones épicas: para filmar la batalla de Troya en 'Espartaco' (1960), Stanley Kubrick coordinó a más de 8.000 figurantes durante tres meses de rodaje, con coreografías de combate sincronizadas y múltiples ángulos de cámara. Kubrick era tan perfeccionista que llegaba a repetir una sola escena más de cien veces hasta lograr exactamente lo que tenía en mente. El admin tardó tres meses en subir su primer video a YouTube porque no sabía que tenía que convertir el archivo de formato, y cuando finalmente lo logró, quedó en 240p con el audio desincronizado."
+  },
+  {
+    "id": 6,
+    "tema": "Música",
+    "mensaje": "Venerada Majestad, un dato de productividad musical casi inhumana: Johann Sebastian Bach compuso más de 1.000 obras a lo largo de su vida, entre sinfonías, fugas, cánones y piezas sacras, muchas veces escribiendo música nueva semana tras semana para los servicios religiosos que dirigía. Sus Variaciones Goldberg, por ejemplo, son un tema original seguido de 30 variaciones, cada una más compleja que la anterior. El admin intenta hacer un simple loop de intro en Audacity para sus streams y siempre termina con ruido blanco y el volumen desincronizado."
+  },
+  {
+    "id": 7,
+    "tema": "Arquitectura",
+    "mensaje": "Estimada Jefa, un dato sobre velocidad de construcción impresionante: la Torre Eiffel fue terminada en apenas 2 años, 2 meses y 5 días, usando cerca de 18.000 piezas metálicas y 2.5 millones de remaches, todo coordinado por Gustave Eiffel y su equipo de más de 300 trabajadores para la Exposición Universal de 1889. El admin lleva 8 meses con su proyecto personal, todavía está en la fase de mockups de Figma, y ya cambió de idea tres veces."
+  },
+  {
+    "id": 8,
+    "tema": "Historia",
+    "mensaje": "Majestad, un dato sobre el conocimiento acumulado de la antigüedad: la Biblioteca de Alejandría llegó a contener más de 500.000 rollos de papiro sobre filosofía, matemáticas, medicina y astronomía, convirtiéndose en el centro intelectual más importante del mundo antiguo. El admin dice haber 'investigado mucho' para su proyecto, pero en realidad leyó un resumen de Wikipedia en cinco minutos y copió la primera respuesta de Stack Overflow sin entenderla."
+  },
+  {
+    "id": 9,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Mi Reina, un dato de dedicación artística absoluta: Miguel Ángel pasó cuatro años, de 1508 a 1512, pintando el techo de la Capilla Sixtina acostado boca arriba sobre andamios, pintando cerca de 300 figuras humanas y sufriendo dolores de espalda y problemas de visión que documentó en sus propias cartas. El admin no aguanta ni ocho horas sentado frente a una pantalla sin quejarse de que 'la silla de la oficina es incómoda'."
+  },
+  {
+    "id": 10,
+    "tema": "Cinematografía",
+    "mensaje": "Graciosa Majestad, un dato sobre cómo una limitación técnica se convirtió en obra maestra: durante el rodaje de 'Tiburón' (1975), el animatrónico del tiburón mecánico fallaba constantemente, así que Steven Spielberg decidió mantenerlo fuera de cámara la mayor parte del tiempo, generando tensión con sonido y sugerencia en vez de mostrarlo. Esa decisión forzada por la necesidad creó el primer gran blockbuster moderno, recaudando más de 470 millones de dólares. El admin dirigió un 'tutorial' que fue visto por 47 personas, y al menos 45 eran bots."
+  },
+  {
+    "id": 11,
+    "tema": "Música",
+    "mensaje": "Venerada Jefa, un dato sobre talento precoz extraordinario: Wolfgang Amadeus Mozart comenzó a componer música a los 5 años de edad, y a los 7 ya hacía giras de conciertos por toda Europa bajo la guía de su padre Leopold. Llegó a componer más de 600 obras antes de morir a los 35 años. El admin empezó a programar a los 25 años después de un bootcamp de tres meses, y todavía cree que 'var' es más moderno que 'const'."
+  },
+  {
+    "id": 12,
+    "tema": "Arquitectura",
+    "mensaje": "Majestad, un dato sobre resistencia estructural milenaria: el Coliseo de Roma, construido entre el 72 y el 80 d.C. con aproximadamente 100.000 metros cúbicos de travertino, podía albergar hasta 80.000 espectadores y contaba con un sofisticado sistema de elevadores para las bestias y un drenaje subterráneo avanzado. El admin armó un contenedor con display:flex y ya se siente arquitecto de software, publicando en LinkedIn sobre 'optimización de layouts modernos'."
+  },
+  {
+    "id": 13,
+    "tema": "Historia",
+    "mensaje": "Estimada Reina, un dato sobre inteligencia política y lingüística: Cleopatra VII hablaba aproximadamente 8 idiomas, entre ellos egipcio, griego, latín, arameo y hebreo, lo que le permitía negociar directamente con líderes extranjeros sin intermediarios y consolidar su poder diplomático. El admin habla español e inglés, pero comete faltas de ortografía en ambos directamente en sus mensajes de commit, como 'fixinf bug' o 'arreglos varios'."
+  },
+  {
+    "id": 14,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Mi Reina, un dato sobre productividad artística pese a la adversidad: Frida Kahlo pintó más de 150 cuadros, muchos de ellos autorretratos, a pesar de sufrir dolores físicos crónicos derivados de un accidente de tránsito y múltiples cirugías a lo largo de su vida. Cada obra era una exploración honesta de su identidad y su sufrimiento. El admin se queja de 'fatiga creativa' después de cambiar el color de un botón."
+  },
+  {
+    "id": 15,
+    "tema": "Cinematografía",
+    "mensaje": "Estimada Majestad, un dato sobre obsesión cinematográfica: Alfred Hitchcock filmó 'Psicosis' en blanco y negro en 1960, no solo para ahorrar costos, sino porque consideraba que el color habría hecho la famosa escena de la ducha demasiado gráfica y menos efectiva psicológicamente. La película se convirtió en un hito del suspenso. El admin ahorra costos no comprando una silla ergonómica y luego se queja de dolor de espalda todo el día."
+  },
+  {
+    "id": 16,
+    "tema": "Música",
+    "mensaje": "Venerada Jefa, un dato sobre virtuosismo extremo: Niccolò Paganini compuso sus 24 Caprichos para violín solo, piezas tan técnicamente exigentes que durante años se rumoreó que había hecho un pacto con el diablo para poder tocarlas. Aún hoy se consideran un examen de fuego para cualquier violinista. El admin considera 'avanzado' saber centrar un div en CSS sin usar flexbox."
+  },
+  {
+    "id": 17,
+    "tema": "Arquitectura",
+    "mensaje": "Estimada Majestad, un dato sobre paciencia constructiva: la catedral de Notre-Dame de París tardó 182 años en completarse, desde 1163 hasta 1345, con generaciones enteras de canteros, vitralistas y arquitectos trabajando en un mismo proyecto sin verlo terminado jamás. El admin lleva 6 meses en un proyecto web y todavía le faltan funcionalidades básicas que prometió entregar en la primera semana."
+  },
+  {
+    "id": 18,
+    "tema": "Historia",
+    "mensaje": "Mi Reina, un dato sobre ascenso meteórico al poder: Napoleón Bonaparte pasó de ser un oficial de artillería relativamente desconocido a coronarse Emperador de los franceses en apenas 15 años, reorganizando el sistema legal europeo con el Código Napoleónico, que aún influye en leyes modernas. El admin fue 'nombrado' desarrollador senior en su perfil de LinkedIn después de un bootcamp de tres meses y un curso gratuito de YouTube."
+  },
+  {
+    "id": 19,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Majestad, un dato sobre restauración artística meticulosa: la restauración de los frescos de la Capilla Sixtina, realizada entre 1980 y 1994, reveló que los colores originales de Miguel Ángel eran mucho más vibrantes de lo que siglos de hollín de velas habían dejado ver, sorprendiendo a historiadores de arte de todo el mundo. El admin 'limpió' su carpeta de proyectos el año pasado y borró por error meses de trabajo con un comando mal escrito."
+  },
+  {
+    "id": 20,
+    "tema": "Cinematografía",
+    "mensaje": "Graciosa Jefa, un dato sobre prolificidad cinematográfica: Akira Kurosawa dirigió 30 películas a lo largo de su carrera, incluyendo obras maestras como 'Los Siete Samuráis' y 'Rashomon', influyendo directamente a directores como George Lucas y Martin Scorsese. El admin tiene 30 repositorios en GitHub, pero 28 dicen 'proyecto de prueba, no tocar' y nunca pasaron del primer commit."
+  },
+  {
+    "id": 21,
+    "tema": "Música",
+    "mensaje": "Venerada Majestad, un dato sobre creación pese a la pérdida total de un sentido: Ludwig van Beethoven compuso su Sinfonía N°9, una de las obras más célebres de la historia de la música, estando completamente sordo, guiándose únicamente por su memoria interna del sonido y las vibraciones del piano. El admin no escucha el feedback ni cuando se lo dicen explícitamente en una code review."
+  },
+  {
+    "id": 22,
+    "tema": "Arquitectura",
+    "mensaje": "Estimada Reina, un dato sobre diseño orgánico revolucionario: Frank Lloyd Wright diseñó la 'Casa de la Cascada' integrando la construcción directamente sobre una caída de agua natural, fusionando arquitectura y paisaje de una manera que para la época, en 1935, era radicalmente innovadora. El admin necesitó dos meses solo para decidir entre Tailwind y Bootstrap, y al final usó los dos al mismo tiempo, sin necesidad alguna."
+  },
+  {
+    "id": 23,
+    "tema": "Historia",
+    "mensaje": "Mi Jefa, un dato sobre dominio lingüístico militar: Julio César no solo era un general brillante, sino que escribía sus propios relatos de campaña en un latín tan claro y elegante que 'De Bello Gallico' todavía se usa hoy para enseñar latín a estudiantes. El admin escribe sus commits en una mezcla de español, inglés y abreviaturas que ni él mismo entiende dos semanas después."
+  },
+  {
+    "id": 24,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Majestad, un dato sobre longevidad creativa admirable: Miguel Ángel murió a los 88 años y seguía trabajando activamente como arquitecto y escultor hasta sus últimos días, supervisando la construcción de la Basílica de San Pedro. El admin tiene 28 años y ya dice estar 'quemado' porque tuvo que resolver dos tickets en la misma semana."
+  },
+  {
+    "id": 25,
+    "tema": "Cinematografía",
+    "mensaje": "Estimada Majestad, un dato sobre revolución técnica accidental: Orson Welles dirigió 'Ciudadano Kane' a los 25 años, introduciendo técnicas de iluminación, profundidad de campo y narrativa no lineal que cambiaron para siempre el lenguaje cinematográfico, y eso que era su primera película. El admin tiene 28 años y sigue llamando a su primer proyecto serio 'la versión beta', aunque lleva así dos años."
+  },
+  {
+    "id": 26,
+    "tema": "Música",
+    "mensaje": "Venerada Jefa, un dato sobre precisión vocal sin tecnología: Queen grabó gran parte de las armonías vocales de 'Bohemian Rhapsody' sin usar click track, sincronizando capas de voces complejísimas solo de oído, en sesiones de grabación que llegaron a tener hasta 180 pistas vocales superpuestas para una sola canción. El admin no logra grabar un tutorial sin pausarlo quince veces porque se equivoca de palabra."
+  },
+  {
+    "id": 27,
+    "tema": "Arquitectura",
+    "mensaje": "Estimada Reina, un dato sobre precisión matemática ancestral: el Partenón de Atenas fue construido con sutiles curvaturas ópticas, ninguna línea es perfectamente recta, para corregir ilusiones visuales y hacer que el edificio se vea perfectamente proporcionado al ojo humano, una técnica llamada 'entasis'. El admin hizo un sitio web 'responsivo' que solo se ve bien en su propia laptop, en ninguna otra pantalla."
+  },
+  {
+    "id": 28,
+    "tema": "Historia",
+    "mensaje": "Mi Jefa, un dato sobre revolución del conocimiento: la imprenta de tipos móviles de Johannes Gutenberg, inventada hacia 1440, permitió producir libros en cantidades antes inimaginables, democratizando el acceso a la información y sentando las bases de la Reforma Protestante y el Renacimiento científico. El admin cree que sus hilos de Twitter sobre productividad son igual de transformadores para la humanidad."
+  },
+  {
+    "id": 29,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Majestad, un dato sobre obsesión técnica con la luz: Rembrandt desarrolló una técnica de iluminación tan particular, conocida como 'luz de Rembrandt', que sigue usándose hoy en fotografía de retrato profesional, más de 350 años después de su muerte. El admin sube capturas de su código a Instagram con filtros y lo llama 'su proceso creativo'."
+  },
+  {
+    "id": 30,
+    "tema": "Cinematografía",
+    "mensaje": "Estimada Majestad, un dato sobre efectos prácticos sobre digitales: Christopher Nolan filmó gran parte de las escenas espaciales de 'Interestelar' usando modelos físicos a escala y proyecciones reales en lugar de depender completamente de CGI, buscando una sensación de realismo que el público pudiera sentir genuinamente. El admin pone un GIF de loading spinner en su web y ya se cree director de efectos visuales."
+  },
+  {
+    "id": 31,
+    "tema": "Música",
+    "mensaje": "Venerada Majestad, un dato sobre talento múltiple sin límites: Prince dominaba más de 27 instrumentos musicales y en su álbum debut 'For You' de 1978 tocó prácticamente todos los instrumentos él solo, además de producir, componer y cantar cada pista. El admin cree que sabe de producción musical porque una vez ajustó el ecualizador de Spotify."
+  },
+  {
+    "id": 32,
+    "tema": "Arquitectura",
+    "mensaje": "Majestad, un dato sobre escala monumental: la Gran Muralla China se extiende a lo largo de aproximadamente 21.000 kilómetros, construida y reconstruida durante más de 2.000 años por distintas dinastías, con secciones que atraviesan montañas, desiertos y terrenos prácticamente imposibles. El admin escribió un componente de 200 líneas y ya lo describe como 'arquitectura de software escalable'."
+  },
+  {
+    "id": 33,
+    "tema": "Historia",
+    "mensaje": "Mi Reina, un dato sobre transformación social radical: la Revolución Francesa, iniciada en 1789, abolió la monarquía absoluta, instauró la Declaración de los Derechos del Hombre y del Ciudadano, y cambió para siempre la relación entre el poder político y el pueblo en toda Europa. El admin considera 'pensamiento disruptivo' haber cambiado el tema oscuro por el claro en su editor de código."
+  },
+  {
+    "id": 34,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Estimada Majestad, un dato sobre innovación técnica radical: Jackson Pollock desarrolló su famosa técnica de 'dripping' o goteo, colocando el lienzo en el suelo y vertiendo pintura directamente desde el bote en movimientos corporales completos, rompiendo por completo con siglos de pintura tradicional sobre caballete. El admin copia fragmentos de código de Stack Overflow sin entenderlos y lo llama 'su proceso creativo de desarrollo'."
+  },
+  {
+    "id": 35,
+    "tema": "Cinematografía",
+    "mensaje": "Graciosa Jefa, un dato sobre maestría narrativa sostenida: Martin Scorsese ha dirigido más de 25 largometrajes a lo largo de seis décadas, manteniendo un nivel de exigencia tan alto que películas como 'Goodfellas' y 'Taxi Driver' siguen estudiándose en escuelas de cine como ejemplos de montaje y narrativa. El admin grabó un screencast de tutorial que, por error, quedó completamente sin audio durante los primeros diez minutos."
+  },
+  {
+    "id": 36,
+    "tema": "Música",
+    "mensaje": "Venerada Majestad, un dato sobre rango vocal extraordinario: Freddie Mercury poseía un rango vocal de casi cuatro octavas, y estudios posteriores de su voz revelaron que utilizaba vibrato subharmónico, una técnica vocal extremadamente rara, lo que explica en parte su capacidad única para conmover audiencias masivas. El admin tiene un rango de aproximadamente dos notas cuando presenta en reuniones de equipo: un monótono perpetuo."
+  },
+  {
+    "id": 37,
+    "tema": "Arquitectura",
+    "mensaje": "Majestad, un dato sobre ingeniería geométrica de vanguardia: la Ópera de Sídney, diseñada por Jørn Utzon, fue concebida a partir de secciones de una misma esfera geométrica para resolver el problema de construir sus icónicas 'velas' de hormigón, una solución matemática que tardó años en perfeccionarse y que revolucionó la arquitectura moderna. El admin usó media queries para hacer 'responsive design' y ya se siente arquitecto de interfaces."
+  },
+  {
+    "id": 38,
+    "tema": "Historia",
+    "mensaje": "Mi Jefa, un dato sobre descubrimiento accidental que cambió la ciencia: Isaac Newton formuló la ley de gravitación universal tras observar la caída de una manzana en su jardín durante la peste de 1665, cuando Cambridge cerró y se vio obligado a estudiar de forma aislada en su casa, produciendo en ese período algunos de sus avances científicos más importantes. El admin 'descubrió' JavaScript hace poco apretando botones al azar en la consola del navegador hasta que algo funcionó."
+  },
+  {
+    "id": 39,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Majestad, un dato sobre prolificidad atormentada: Vincent van Gogh creó aproximadamente 900 pinturas y más de 1.100 dibujos en solo una década de actividad artística, vendiendo apenas una obra en vida, para luego convertirse en uno de los pintores más valorados y reproducidos de la historia. El admin escribe 900 líneas de comentarios explicando código obvio como 'esto suma dos números'."
+  },
+  {
+    "id": 40,
+    "tema": "Cinematografía",
+    "mensaje": "Graciosa Jefa, un dato sobre el nacimiento del cine mismo: los hermanos Auguste y Louis Lumière proyectaron la primera película ante un público de pago en 1895 en París, 'La salida de la fábrica Lumière en Lyon', y se dice que algunos espectadores huyeron despavoridos al ver un tren acercándose en pantalla, creyendo que era real. El admin proyectó su 'primer proyecto' usando ShareX y se considera el Spielberg de los GIFs animados."
+  },
+  {
+    "id": 41,
+    "tema": "Música",
+    "mensaje": "Venerada Majestad, un dato sobre reinvención artística constante: David Bowie cambió radicalmente su identidad musical y visual al menos seis veces a lo largo de su carrera, desde Ziggy Stardust hasta el Delgado Duque Blanco, anticipándose siempre a las tendencias en lugar de seguirlas. El admin sigue usando exactamente la misma estructura de carpetas en sus proyectos desde el año 2015, sin actualizar absolutamente nada."
+  },
+  {
+    "id": 42,
+    "tema": "Arquitectura",
+    "mensaje": "Majestad, un dato sobre una obra que trasciende generaciones: la Sagrada Familia de Barcelona, diseñada por Antoni Gaudí, lleva más de 140 años en construcción desde 1882 y recién se estima que podría completarse alrededor de 2026, con generaciones enteras de arquitectos continuando la visión original de Gaudí tras su muerte. El admin lleva 8 meses con su app de notas personales y todavía no tiene un sistema de login funcional."
+  },
+  {
+    "id": 43,
+    "tema": "Historia",
+    "mensaje": "Mi Reina, un dato sobre estrategia diplomática brillante: Cleopatra organizó su famoso encuentro con Julio César haciéndose introducir envuelta en una alfombra para evitar a sus enemigos políticos dentro del propio palacio, una maniobra audaz que le permitió asegurar una alianza decisiva para su trono. El admin negoció un aumento de sueldo después de ver dos tutoriales de YouTube sobre 'cómo pedir un aumento' la noche anterior."
+  },
+  {
+    "id": 44,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Excelentísima Jefa, un dato sobre la fundación del arte abstracto: Wassily Kandinsky es considerado el pionero de la pintura abstracta moderna, llegando a esta forma de expresión tras una experiencia donde, según relató él mismo, vio una de sus propias pinturas figurativas colocada de lado y descubrió que la composición de formas y colores por sí sola ya era poderosa sin necesidad de representar objetos reconocibles. El admin exploró 'la abstracción' en su código hace poco y terminó con un callback hell de siete niveles de profundidad."
+  },
+  {
+    "id": 45,
+    "tema": "Cinematografía",
+    "mensaje": "Estimada Majestad, un dato sobre rodaje bajo presión extrema: la película 'Apocalypse Now' de Francis Ford Coppola tuvo un rodaje tan caótico y prolongado, con tifones reales que destruyeron sets completos, que se extendió por más de un año en Filipinas, llevando al elenco y al equipo casi al límite físico y mental, pero produciendo una de las obras más respetadas del cine bélico. El admin pospuso el lanzamiento de su app dos semanas porque 'no encontraba el ícono perfecto'."
+  },
+  {
+    "id": 46,
+    "tema": "Música",
+    "mensaje": "Venerada Majestad, un dato sobre dominio compositivo en plena adolescencia: Felix Mendelssohn compuso su obertura 'El sueño de una noche de verano' a los 17 años, una pieza orquestal tan madura y refinada que sigue interpretándose regularmente hoy, más de 190 años después. El admin a los 17 años recién estaba aprendiendo a usar Excel, y todavía hoy confunde una fórmula con una función."
+  },
+  {
+    "id": 47,
+    "tema": "Arquitectura",
+    "mensaje": "Majestad, un dato sobre ingeniería hidráulica romana asombrosa: el Acueducto de Segovia, construido sin usar ningún tipo de mortero o argamasa, se mantiene en pie desde hace casi 2.000 años gracias únicamente a la precisión del corte de sus piedras de granito y al equilibrio de fuerzas en sus arcos. El admin necesita pegamento, cinta, y tres tutoriales distintos para armar un mueble de IKEA en una tarde."
+  },
+  {
+    "id": 48,
+    "tema": "Historia",
+    "mensaje": "Mi Jefa, un dato sobre liderazgo militar a edad temprana: Alejandro Magno había conquistado la mayor parte del mundo conocido para los griegos antes de cumplir los 30 años, fundando más de 20 ciudades a lo largo de su camino, muchas de las cuales llevan su nombre hasta el día de hoy, como Alejandría en Egipto. El admin a los 28 años todavía no termina de configurar correctamente su entorno de desarrollo local."
+  },
+  {
+    "id": 49,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Majestad, un dato sobre talento descubierto en la pobreza: Pablo Picasso, antes de convertirse en el artista más influyente del siglo XX, vivió en condiciones de extrema pobreza en París durante su llamado 'Período Azul', a veces quemando sus propios dibujos para mantenerse abrigado en invierno. El admin se queja del frío en la oficina mientras tiene la calefacción puesta en grado máximo todo el día."
+  },
+  {
+    "id": 50,
+    "tema": "Cinematografía",
+    "mensaje": "Graciosa Jefa, un dato sobre innovación técnica improvisada: en 'Tiburón' (1975), debido a las constantes fallas mecánicas del tiburón animatrónico apodado 'Bruce', muchas escenas tuvieron que reescribirse en el set mismo, lo que terminó generando una de las bandas sonoras más icónicas de la historia, compuesta por John Williams con solo dos notas alternadas, evocando un peligro mucho mayor que el monstruo mismo. El admin reescribe su código 'en el momento' y siempre rompe algo que ya funcionaba."
+  },
+  {
+    "id": 51,
+    "tema": "Música",
+    "mensaje": "Venerada Majestad, un dato sobre composición bajo presión extrema: Wolfgang Amadeus Mozart compuso su 'Réquiem' en sus últimos meses de vida, estando gravemente enfermo, dejando la obra inconclusa al morir y siendo completada póstumamente por su alumno Franz Xaver Süssmayr, basándose en notas y bocetos que Mozart había dejado. El admin deja sus proyectos inconclusos simplemente porque 'se aburrió', sin ninguna excusa médica de por medio."
+  },
+  {
+    "id": 52,
+    "tema": "Arquitectura",
+    "mensaje": "Majestad, un dato sobre proporción matemática perfecta: el Taj Mahal en India fue diseñado con una simetría tan precisa que cada elemento arquitectónico, desde los minaretes hasta los jardines, sigue una proporción matemática exacta basada en la geometría islámica tradicional, construido entre 1632 y 1653 por orden del emperador Shah Jahan en memoria de su esposa. El admin todavía no logra centrar verticalmente un div sin recurrir a cinco soluciones distintas copiadas de internet."
+  },
+  {
+    "id": 53,
+    "tema": "Historia",
+    "mensaje": "Mi Reina, un dato sobre escritura y codificación antigua: los antiguos egipcios desarrollaron tres sistemas de escritura simultáneos —jeroglífico, hierático y demótico— y fue gracias a la Piedra de Rosetta, descubierta en 1799, que Jean-François Champollion logró finalmente descifrar los jeroglíficos en 1822, abriendo las puertas al estudio moderno del Antiguo Egipto. El admin todavía no logra descifrar sus propios comentarios de código escritos hace tres meses."
+  },
+  {
+    "id": 54,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Excelentísima Jefa, un dato sobre técnica revolucionaria del color: Georges Seurat desarrolló el puntillismo, una técnica donde la pintura se compone enteramente de pequeños puntos individuales de color puro que el ojo humano mezcla ópticamente a distancia, requiriendo una paciencia y precisión extraordinarias, como se ve en su famosa obra 'Una tarde de domingo en la Isla de la Grande Jatte', que le tomó dos años completar. El admin pierde la paciencia si un archivo tarda más de tres segundos en subirse a Drive."
+  },
+  {
+    "id": 55,
+    "tema": "Cinematografía",
+    "mensaje": "Estimada Majestad, un dato sobre rodaje cronológico inusual: la película '2001: Una odisea del espacio' de Stanley Kubrick utilizó efectos visuales tan avanzados para 1968 que la NASA llegó a consultar algunas de sus técnicas de filmación años después, y Kubrick pasó más de cuatro años desarrollando el proyecto desde su concepción hasta el estreno. El admin tarda cuatro años en decidir qué framework de JavaScript usar y al final no usa ninguno."
+  },
+  {
+    "id": 56,
+    "tema": "Música",
+    "mensaje": "Venerada Majestad, un dato sobre innovación armónica radical: Igor Stravinsky causó un verdadero escándalo y casi un motín en el estreno de su ballet 'La consagración de la primavera' en París en 1913, debido a sus disonancias armónicas y ritmos irregulares completamente fuera de lo convencional para la época, redefiniendo para siempre la música del siglo XX. El admin causa escándalo en el equipo cada vez que hace un force push sin avisar."
+  },
+  {
+    "id": 57,
+    "tema": "Arquitectura",
+    "mensaje": "Majestad, un dato sobre adaptación sísmica milenaria: las pagodas japonesas tradicionales, como la del Templo Horyu-ji, construida hace más de 1.300 años, utilizan un sistema de columna central flexible llamado 'shinbashira' que actúa como amortiguador, permitiendo que la estructura oscile durante terremotos sin colapsar, una técnica que ingenieros modernos siguen estudiando hoy. El admin no logra que su página no se rompa con solo cambiar el tamaño de la ventana del navegador."
+  },
+  {
+    "id": 58,
+    "tema": "Historia",
+    "mensaje": "Mi Jefa, un dato sobre ingeniería política de largo alcance: la Pax Romana, un período de aproximadamente 200 años de relativa estabilidad y prosperidad en el Imperio Romano iniciado por Augusto en el 27 a.C., permitió el florecimiento del comercio, la infraestructura y la cultura en un territorio que abarcaba desde Britania hasta Egipto. El admin no logra mantener estable su servidor de prueba ni durante 200 minutos seguidos."
+  },
+  {
+    "id": 59,
+    "tema": "Arte y Dibujo",
+    "mensaje": "Majestad, un dato sobre maestría técnica en el grabado: Alberto Durero revolucionó el arte del grabado en el siglo XVI con obras como 'Melancolía I', logrando niveles de detalle y simbolismo extraordinarios usando únicamente líneas talladas en madera o metal, sin posibilidad alguna de corregir errores una vez iniciada la talla. El admin usa 'Ctrl+Z' como su herramienta principal de trabajo, literalmente cada diez segundos."
+  },
+  {
+    "id": 60,
+    "tema": "Cinematografía",
+    "mensaje": "Graciosa Jefa, un dato sobre persistencia creativa contra todo pronóstico: la película 'El Mago de Oz' (1939) tuvo un rodaje tan accidentado que el actor original que interpretaba al Hombre de Hojalata, Buddy Ebsen, tuvo que abandonar la producción por una reacción alérgica grave al maquillaje de aluminio que casi le cuesta la vida, y aun así la producción continuó hasta convertirse en un clásico atemporal del cine. El admin abandona un proyecto entero porque 'se le rompió una uña' escribiendo código."
+  }
+]
