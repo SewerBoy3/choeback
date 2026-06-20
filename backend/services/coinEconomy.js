@@ -7,8 +7,8 @@ export const DEFAULT_GAME_CONFIG = {
     recordBonus: 3,
   },
   tetris: {
-    divisor: 300,
-    minScoreForParticipation: 300,
+    divisor: 200,
+    minScoreForParticipation: 100,
     participationBonus: 1,
     performanceCap: 6,
     recordBonus: 3,
