@@ -38,9 +38,9 @@ async function seedData() {
         music_autoplay: 'false',
         dino_speed_multiplier: '1.0',
         tetris_start_level: '1',
-        dino_coin_divisor: '8',
-        tetris_coin_divisor: '40',
-        coin_daily_bonus: '5',
+        dino_coin_divisor: '50',
+        tetris_coin_divisor: '300',
+        coin_daily_bonus: '10',
         discord_user_id_fer: '',
         discord_user_id_zoe: '',
         discord_bot_token: ''
@@ -99,9 +99,9 @@ async function seedData() {
     }
 
     const economyKeys = {
-      dino_coin_divisor: '8',
-      tetris_coin_divisor: '40',
-      coin_daily_bonus: '5',
+      dino_coin_divisor: '50',
+      tetris_coin_divisor: '300',
+      coin_daily_bonus: '10',
       discord_user_id_fer: '',
       discord_user_id_zoe: '',
       discord_bot_token: '',
@@ -110,6 +110,8 @@ async function seedData() {
       const exists = await prisma.setting.findUnique({ where: { key } });
       if (!exists) {
         await prisma.setting.create({ data: { key, value } });
+      } else if (['dino_coin_divisor', 'tetris_coin_divisor', 'coin_daily_bonus'].includes(key)) {
+        await prisma.setting.update({ where: { key }, data: { value } });
       }
     }
 

@@ -7,8 +7,10 @@ import {
   buildRewardMessage,
   getEconomyInfo,
   getDailyBonusFromSettings,
+  getWeeklyCoinsEarned,
   DAILY_BONUS,
 } from '../services/coinEconomy.js';
+import { checkCoinsMilestone } from '../utils/milestones.js';
 
 const router = express.Router();
 
@@ -68,14 +70,37 @@ router.post('/score', verificarUsuario, async (req, res) => {
     const mapaConfiguracion = Object.fromEntries(filasConfiguracion.map((r) => [r.key, r.value]));
     const dailyBonus = getDailyBonusFromSettings(mapaConfiguracion);
 
-    const { total: pointsAwarded, breakdown, isNewRecord } = calculateCoins(
-      gameKey,
-      puntajeNuevo,
-      oldBest,
-      isFirstGameToday,
-      config,
-      dailyBonus
-    );
+    // Calcular monedas ganadas esta semana antes de registrar esta partida
+    const weeklyEarnedBefore = await getWeeklyCoinsEarned(userId, prisma, config, dailyBonus);
+    const WEEKLY_CAP = 300;
+
+    let pointsAwarded = 0;
+    let message = '';
+    let breakdown = { participation: 0, performance: 0, recordBonus: 0, daily: 0 };
+
+    if (weeklyEarnedBefore >= WEEKLY_CAP) {
+      pointsAwarded = 0;
+      message = '¡Partida registrada! Has alcanzado el límite semanal de 300 monedas para juegos.';
+    } else {
+      const calcResult = calculateCoins(
+        gameKey,
+        puntajeNuevo,
+        oldBest,
+        isFirstGameToday,
+        config,
+        dailyBonus
+      );
+      breakdown = calcResult.breakdown;
+      const potentialPoints = calcResult.total;
+
+      if (weeklyEarnedBefore + potentialPoints > WEEKLY_CAP) {
+        pointsAwarded = WEEKLY_CAP - weeklyEarnedBefore;
+        message = `¡Partida registrada! Ganaste ${pointsAwarded} monedas (llegaste al límite semanal de 300 monedas).`;
+      } else {
+        pointsAwarded = potentialPoints;
+        message = buildRewardMessage(breakdown, pointsAwarded);
+      }
+    }
 
     await prisma.puntuacionJuego.create({
       data: {
@@ -91,18 +116,21 @@ router.post('/score', verificarUsuario, async (req, res) => {
         where: { id: userId },
         data: { points: { increment: pointsAwarded } },
       });
+      
+      if (updatedUser.username === 'choe') {
+        const oldPoints = updatedUser.points - pointsAwarded;
+        checkCoinsMilestone(oldPoints, updatedUser.points, 'choe');
+      }
     } else {
       updatedUser = await prisma.user.findUnique({ where: { id: userId } });
     }
-
-    const message = buildRewardMessage(breakdown, pointsAwarded);
 
     res.json({
       success: true,
       pointsAwarded,
       breakdown,
       totalPoints: updatedUser.points,
-      isNewRecord,
+      isNewRecord: pointsAwarded > 0 ? (score > oldBest) : false,
       isFirstGameToday,
       previousBest: oldBest,
       message,

@@ -11,6 +11,7 @@ import gamesRouter from './routes/games.js';
 import songsRouter from './routes/songs.js';
 import notifyRouter from './routes/notify.js';
 import galleryRouter from './routes/gallery.js';
+import likesRouter from './routes/likes.js';
 import db from './database.js';
 import prisma from './prisma.js';
 import { startDiscordBot } from './services/discordBot.js';
@@ -61,6 +62,7 @@ app.use('/api/games', gamesRouter);
 app.use('/api/songs', songsRouter);
 app.use('/notify', notifyRouter);
 app.use('/api/gallery', galleryRouter);
+app.use('/api/likes', likesRouter);
 app.use('/', notifyRouter);
 
 app.get('/api/anniversary', async (req, res) => {
@@ -87,9 +89,9 @@ app.get('/api/public-settings', async (req, res) => {
       music_autoplay: 'false',
       dino_speed_multiplier: '1.0',
       tetris_start_level: '1',
-      dino_coin_divisor: '8',
-      tetris_coin_divisor: '40',
-      coin_daily_bonus: '5'
+      dino_coin_divisor: '50',
+      tetris_coin_divisor: '300',
+      coin_daily_bonus: '10'
     };
     if (rows) {
       const sensitiveKeys = ['discord_webhook', 'telegram_token', 'telegram_chat_id', 'admin_password', 'discord_bot_token'];

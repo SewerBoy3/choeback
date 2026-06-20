@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import multer from "multer";
 import prisma from "../prisma.js";
 import { subirArchivoBuffer } from "../services/cloudinaryStorage.js";
+import { notifyZoe } from "../services/notificationService.js";
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "choe-os-secret-key-16bit";
@@ -115,6 +116,15 @@ router.post("/", verificarAdmin, upload.single("image"), async (req, res) => {
       },
     });
     console.log("Foto creada exitosamente:", foto.id);
+
+    if (foto.is_published) {
+      notifyZoe(
+        `📸 Nueva Foto en la Galería`,
+        `Fer ha subido una nueva foto a la galería:\n_"${foto.caption || 'Sin descripción'}"_ 🖼️`,
+        0xF472B6
+      ).catch(err => console.error("Error al notificar nueva foto a Zoe:", err.message));
+    }
+
     res.json({ success: true, foto });
   } catch (err) {
     console.error("Error al crear foto:", err);
@@ -166,6 +176,15 @@ router.put("/:id", verificarAdmin, upload.single("image"), async (req, res) => {
           is_published !== undefined ? !!is_published : existing.is_published,
       },
     });
+
+    if (!existing.is_published && foto.is_published) {
+      notifyZoe(
+        `📸 Nueva Foto en la Galería`,
+        `Fer ha publicado una nueva foto en la galería:\n_"${foto.caption || 'Sin descripción'}"_ 🖼️`,
+        0xF472B6
+      ).catch(err => console.error("Error al notificar foto publicada a Zoe:", err.message));
+    }
+
     res.json({ success: true, foto });
   } catch (err) {
     console.error("Error al actualizar foto:", err);
@@ -230,6 +249,15 @@ router.post("/cartas", verificarAdmin, async (req, res) => {
         polaroid_image: polaroid_image || null,
       },
     });
+
+    if (carta.is_published) {
+      notifyZoe(
+        `📖 Nueva Carta en el Poemario`,
+        `Fer ha escrito un nuevo poema o carta:\n**${carta.title}**\n\n¡Entra a leerlo al Poemario! 💖`,
+        0xF472B6
+      ).catch(err => console.error("Error al notificar nueva carta a Zoe:", err.message));
+    }
+
     res.json({ success: true, carta });
   } catch (err) {
     console.error("Error al crear carta:", err);
@@ -264,6 +292,15 @@ router.put("/cartas/:id", verificarAdmin, async (req, res) => {
             : existing.polaroid_image,
       },
     });
+
+    if (!existing.is_published && carta.is_published) {
+      notifyZoe(
+        `📖 Nueva Carta en el Poemario`,
+        `Fer ha publicado una carta o poema especial:\n**${carta.title}**\n\n¡Entra a leerlo al Poemario! 💖`,
+        0xF472B6
+      ).catch(err => console.error("Error al notificar carta publicada a Zoe:", err.message));
+    }
+
     res.json({ success: true, carta });
   } catch (err) {
     res.status(500).json({ error: "Error al actualizar carta." });

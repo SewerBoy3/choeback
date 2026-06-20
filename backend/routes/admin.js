@@ -4,6 +4,7 @@ import prisma from '../prisma.js';
 import axios from 'axios';
 import { notifyZoe, notifyFer } from '../services/notificationService.js';
 import { startDiscordBot } from '../services/discordBot.js';
+import { checkCoinsMilestone } from '../utils/milestones.js';
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'choe-os-secret-key-16bit';
@@ -264,6 +265,29 @@ router.post('/test-webhook', verificarAdmin, async (req, res) => {
   });
 });
 
+router.post('/notify-credentials', verificarAdmin, async (req, res) => {
+  try {
+    const successZoe = await notifyZoe(
+      '🔑 Tus Credenciales de Acceso',
+      '¡Hola Zoe! Aquí tienes tus credenciales de acceso para Choe-OS:\n\n👤 **Usuario:** `choe`\n🔑 **Contraseña:** `calipanzona` *(si no la has cambiado)*\n\n¡Guárdalas bien! 💖',
+      0xF472B6
+    );
+    if (!successZoe) {
+      return res.status(400).json({
+        success: false,
+        error: 'No se pudo enviar el mensaje a Zoe. Verifica que su ID de Discord esté configurado y que tenga los DMs abiertos.'
+      });
+    }
+    res.json({
+      success: true,
+      message: '¡Credenciales enviadas a Zoe correctamente!'
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
 router.get('/users', verificarAdmin, async (req, res) => {
   try {
     const users = await prisma.user.findMany({
@@ -317,6 +341,9 @@ router.post('/users/:id/points', verificarAdmin, async (req, res) => {
     });
 
     if (updatedUser.username === 'choe') {
+      // Trigger hito de 100 monedas
+      checkCoinsMilestone(user.points, updatedUser.points, 'choe');
+
       let msg = '';
       if (action === 'add') msg = `¡Fer te ha regalado **${value}** Monedas de Amor! 💖`;
       else if (action === 'subtract') msg = `Fer ha descontado **${value}** Monedas de Amor. 💔`;

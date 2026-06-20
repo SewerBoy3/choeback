@@ -1,29 +1,21 @@
-/**
- * Economía de Monedas de Amor — modelo híbrido:
- * - Participación: monedas por jugar una partida válida (siempre, sin depender del récord)
- * - Rendimiento: monedas según puntuación, con tope por partida
- * - Récord: bonus al superar la mejor marca personal
- * - Diario: bonus en la primera partida del día (cualquier juego)
- */
-
 export const DEFAULT_GAME_CONFIG = {
   dino: {
-    divisor: 8,
-    minScoreForParticipation: 15,
-    participationBonus: 2,
-    performanceCap: 10,
-    recordBonus: 5,
+    divisor: 50,
+    minScoreForParticipation: 50,
+    participationBonus: 1,
+    performanceCap: 5,
+    recordBonus: 3,
   },
   tetris: {
-    divisor: 40,
-    minScoreForParticipation: 100,
-    participationBonus: 2,
-    performanceCap: 12,
-    recordBonus: 5,
+    divisor: 300,
+    minScoreForParticipation: 300,
+    participationBonus: 1,
+    performanceCap: 6,
+    recordBonus: 3,
   },
 };
 
-export const DAILY_BONUS = 5;
+export const DAILY_BONUS = 10;
 
 const SETTING_KEYS = {
   dino_divisor: 'dino_coin_divisor',
@@ -140,6 +132,77 @@ export function getEconomyInfo(config, dailyBonus = DAILY_BONUS) {
       'Cada partida válida da monedas por participación y rendimiento.',
       'Superar tu récord personal otorga un bonus extra.',
       'La primera partida del día incluye un bonus diario.',
+      'Existe un límite máximo de 300 monedas semanales que puedes ganar jugando.'
     ],
   };
+}
+
+/**
+ * Calcula el total de monedas ganadas en la semana actual (desde el lunes a las 00:00).
+ */
+export async function getWeeklyCoinsEarned(userId, prisma, config, dailyBonus = DAILY_BONUS) {
+  const now = new Date();
+  const day = now.getDay(); // 0 es Domingo, 1 es Lunes, etc.
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+  const startOfWeek = new Date(now);
+  startOfWeek.setDate(diff);
+  startOfWeek.setHours(0, 0, 0, 0);
+
+  // Obtener todas las puntuaciones de esta semana
+  const gamesThisWeek = await prisma.puntuacionJuego.findMany({
+    where: {
+      user_id: userId,
+      created_at: { gte: startOfWeek },
+    },
+    orderBy: { created_at: 'asc' },
+  });
+
+  if (gamesThisWeek.length === 0) {
+    return 0;
+  }
+
+  // Obtener mejor puntuación anterior al inicio de la semana para cada juego
+  const preWeekScores = await prisma.puntuacionJuego.groupBy({
+    by: ['game_name'],
+    where: {
+      user_id: userId,
+      created_at: { lt: startOfWeek },
+    },
+    _max: { score: true },
+  });
+
+  const bestScores = {};
+  for (const item of preWeekScores) {
+    bestScores[item.game_name] = item._max.score || 0;
+  }
+
+  const playedDates = new Set();
+  let totalEarnedThisWeek = 0;
+
+  for (const game of gamesThisWeek) {
+    const gameKey = game.game_name.toLowerCase();
+    const score = game.score;
+    const oldBest = bestScores[gameKey] || 0;
+
+    const dateStr = game.created_at.toISOString().split('T')[0];
+    const isFirstGameToday = !playedDates.has(dateStr);
+    playedDates.add(dateStr);
+
+    const { total } = calculateCoins(
+      gameKey,
+      score,
+      oldBest,
+      isFirstGameToday,
+      config,
+      dailyBonus
+    );
+
+    totalEarnedThisWeek += total;
+
+    if (score > oldBest) {
+      bestScores[gameKey] = score;
+    }
+  }
+
+  return totalEarnedThisWeek;
 }

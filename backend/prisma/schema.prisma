@@ -84,3 +84,14 @@ model Foto {
 
   @@map("fotos")
 }
+
+model Like {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  target_id   Int
+  target_type String   // "foto", "cancion", "carta"
+  created_at  DateTime @default(now())
+
+  @@unique([user_id, target_id, target_type])
+  @@map("likes")
+}
